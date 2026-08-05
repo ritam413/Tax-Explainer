@@ -1,0 +1,63 @@
+{
+  "id": "jpn-2025-general-account",
+  "country": "Japan",
+  "year": 2025,
+  "currency": "¥",
+  "totalBudget": 114.0,
+  "sectors": [
+    {
+      "id": "jpn-sec-social",
+      "category": "Social Security & Aging Population Support",
+      "allocatedAmount": 37.7,
+      "priorYearAmount": 37.72,
+      "growthPercentage": -0.05,
+      "percentageOfTotal": 33.07,
+      "description": "Pension funding and elderly healthcare."
+    },
+    {
+      "id": "jpn-sec-debt",
+      "category": "National Debt Servicing",
+      "allocatedAmount": 27.0,
+      "priorYearAmount": 27.0,
+      "growthPercentage": 0.0,
+      "percentageOfTotal": 23.68,
+      "description": "JGB interest and debt servicing."
+    },
+    {
+      "id": "jpn-sec-defense",
+      "category": "Defense Capability Modernization",
+      "allocatedAmount": 7.9,
+      "priorYearAmount": 7.92,
+      "growthPercentage": -0.25,
+      "percentageOfTotal": 6.93,
+      "description": "Defense equipment and base restructuring."
+    },
+    {
+      "id": "jpn-sec-local",
+      "category": "Local Allocation Tax Grants",
+      "allocatedAmount": 17.3,
+      "priorYearAmount": 17.3,
+      "growthPercentage": 0.0,
+      "percentageOfTotal": 15.18,
+      "description": "Tax sharing grants to local authorities."
+    },
+    {
+      "id": "jpn-sec-public-works",
+      "category": "Public Works & Disaster Resilience",
+      "allocatedAmount": 6.2,
+      "priorYearAmount": 6.2,
+      "growthPercentage": 0.0,
+      "percentageOfTotal": 5.44,
+      "description": "Disaster mitigation infrastructure."
+    },
+    {
+      "id": "jpn-sec-tech-gx",
+      "category": "Green Transformation (GX) & Semiconductors",
+      "allocatedAmount": 0.2,
+      "priorYearAmount": 0.05,
+      "growthPercentage": 300.0,
+      "percentageOfTotal": 0.18,
+      "description": "GX strategy subsidies."
+    }
+  ]
+}

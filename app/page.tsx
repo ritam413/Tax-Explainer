@@ -1,67 +1,101 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import React, { useState, useEffect } from 'react';
+import { Navbar } from '@/components/nav/Navbar';
+import { Sidebar } from '@/components/nav/Sidebar';
+import { MobileMenu } from '@/components/nav/MobileMenu';
+import { HeroSnapshotCard } from '@/components/dashboard/HeroSnapshotCard';
+import { OverviewCards } from '@/components/dashboard/OverviewCards';
+import { SectorBreakdownList } from '@/components/dashboard/SectorBreakdownList';
+import { BudgetDataset } from '@/types/budget';
+import { Sparkles, ShieldCheck } from 'lucide-react';
+
+export default function DashboardPage() {
+  const [dataset, setDataset] = useState<BudgetDataset | null>(null);
+  const [cached, setCached] = useState<boolean>(false);
+  const [loadTimeMs, setLoadTimeMs] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
+  const fetchDashboardData = async () => {
+    setLoading(true);
+    const start = performance.now();
+    try {
+      const res = await fetch('/api/dashboard?country=India&year=2026');
+      const data = await res.json();
+      const duration = Math.round(performance.now() - start);
+
+      if (data && data.data) {
+        setDataset(data.data);
+        setCached(Boolean(data.cached));
+        setLoadTimeMs(data.loadTimeMs || duration);
+      }
+    } catch (err) {
+      console.error('Failed to load dashboard budget data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+    <div className="min-h-screen bg-[#000000] text-[#ddffdc] flex flex-col font-inter-variable antialiased pb-16">
+      {/* Global Navigation Shell */}
+      <Navbar
+        onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        isMobileMenuOpen={isMobileMenuOpen}
+      />
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
+
+      {/* Main Page Layout Shell (1280px max-width) */}
+      <main className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 mt-6 flex gap-8 flex-1">
+        {/* Left Desktop Sidebar (Hidden on mobile) */}
+        <Sidebar />
+
+        {/* Right Content Area */}
+        <div className="flex-1 space-y-8 min-w-0">
+          {/* Top Banner Notice */}
+          <div className="bg-[#181818] border border-[#485346] rounded-[8px] p-4 flex items-center justify-between gap-4 shadow-md">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-[6px] bg-[#212525] text-[#7fee64]">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-[13px] font-semibold text-[#ddffdc]">
+                  Phase 1 Baseline: Union Budget 2026 Snapshot Active
+                </span>
+                <p className="text-[12px] text-[#8cab87]">
+                  Rendered under 2s target limit with Redis caching layer enabled.
+                </p>
+              </div>
+            </div>
+
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#7fee64]/10 border border-[#7fee64]/30 text-[#7fee64] text-[12px] font-semibold">
+              <ShieldCheck className="w-4 h-4 text-[#7fee64]" />
+              <span>Verified Dataset</span>
+            </div>
+          </div>
+
+          {/* Hero Snapshot Card */}
+          <HeroSnapshotCard
+            dataset={dataset}
+            cached={cached}
+            loadTimeMs={loadTimeMs}
+            loading={loading}
+            onRefreshCache={fetchDashboardData}
+          />
+
+          {/* Overview Metric Cards */}
+          <OverviewCards dataset={dataset} />
+
+          {/* Detailed Sector Breakdown List */}
+          <SectorBreakdownList dataset={dataset} loading={loading} />
         </div>
       </main>
     </div>

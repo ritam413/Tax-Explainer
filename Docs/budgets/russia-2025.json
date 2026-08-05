@@ -1,0 +1,54 @@
+{
+  "id": "rus-2025-federal-budget",
+  "country": "Russia",
+  "year": 2025,
+  "currency": "₽",
+  "totalBudget": 41.5,
+  "sectors": [
+    {
+      "id": "rus-sec-defense",
+      "category": "National Defense & Security Procurement",
+      "allocatedAmount": 13.1,
+      "priorYearAmount": 10.8,
+      "growthPercentage": 21.30,
+      "percentageOfTotal": 31.57,
+      "description": "Military operations, industrial procurement, and classified defense expenditures."
+    },
+    {
+      "id": "rus-sec-social",
+      "category": "Social Policy & Pensions",
+      "allocatedAmount": 7.5,
+      "priorYearAmount": 7.5,
+      "growthPercentage": 0.0,
+      "percentageOfTotal": 18.07,
+      "description": "Pension disbursements and family subsidies."
+    },
+    {
+      "id": "rus-sec-economy",
+      "category": "National Economy & Transport",
+      "allocatedAmount": 4.5,
+      "priorYearAmount": 4.2,
+      "growthPercentage": 7.14,
+      "percentageOfTotal": 10.84,
+      "description": "Industrial subsidies and regional economic support."
+    },
+    {
+      "id": "rus-sec-security",
+      "category": "National Security & Law Enforcement",
+      "allocatedAmount": 3.5,
+      "priorYearAmount": 3.4,
+      "growthPercentage": 2.94,
+      "percentageOfTotal": 8.43,
+      "description": "Law enforcement agencies and emergency response."
+    },
+    {
+      "id": "rus-sec-health-edu",
+      "category": "Healthcare & Education",
+      "allocatedAmount": 3.1,
+      "priorYearAmount": 3.0,
+      "growthPercentage": 3.33,
+      "percentageOfTotal": 7.47,
+      "description": "Federal healthcare outlays and vocational education."
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "rus-2024-federal-budget",
+  "country": "Russia",
+  "year": 2024,
+  "currency": "₽",
+  "totalBudget": 40.19,
+  "sectors": [
+    {
+      "id": "rus-sec-defense",
+      "category": "National Defense & Security Procurement",
+      "allocatedAmount": 10.8,
+      "priorYearAmount": 6.4,
+      "growthPercentage": 68.75,
+      "percentageOfTotal": 26.87,
+      "description": "Armed forces expenditure and state defense orders."
+    },
+    {
+      "id": "rus-sec-social",
+      "category": "Social Policy & Pensions",
+      "allocatedAmount": 7.5,
+      "priorYearAmount": 6.8,
+      "growthPercentage": 10.29,
+      "percentageOfTotal": 18.66,
+      "description": "Social security, pensions, and child allowances."
+    },
+    {
+      "id": "rus-sec-economy",
+      "category": "National Economy & Transport",
+      "allocatedAmount": 4.2,
+      "priorYearAmount": 3.8,
+      "growthPercentage": 10.53,
+      "percentageOfTotal": 10.45,
+      "description": "Infrastructure, logistics, and import substitution programs."
+    },
+    {
+      "id": "rus-sec-security",
+      "category": "National Security & Law Enforcement",
+      "allocatedAmount": 3.4,
+      "priorYearAmount": 3.2,
+      "growthPercentage": 6.25,
+      "percentageOfTotal": 8.46,
+      "description": "Police, National Guard, and border security."
+    },
+    {
+      "id": "rus-sec-health-edu",
+      "category": "Healthcare & Education",
+      "allocatedAmount": 3.0,
+      "priorYearAmount": 2.8,
+      "growthPercentage": 7.14,
+      "percentageOfTotal": 7.46,
+      "description": "Federal schools, universities, and medical facilities."
+    }
+  ]
+}

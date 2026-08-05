@@ -1,26 +1,89 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Modal Design Tokens - Phosphor Terminal Dark Theme */
+    --color-void-black: #000000;
+    --color-ground-iron: #181818;
+    --color-carbon-veil: #212525;
+    --color-circuit-border: #485346;
+    --color-phosphor-blue-black: #1f2a33;
+    --color-charcoal-rust: #231c1c;
+    --color-lime-pulse: #7fee64;
+    --color-phosphor-white: #ddffdc;
+    --color-mint-frost: #def0dd;
+    --color-sage-60: #8cab87;
+    --color-sage-40: #677d64;
+    --color-moss-70: #9cbf93;
+    --color-moss-80: #aed2a4;
+    --color-fern-link: #859984;
+    --color-deep-fern: #697368;
+    --color-pine-15: #3e4a3c;
+
+    /* Typography */
+    --font-goga: var(--font-manrope), 'Space Grotesk', system-ui, sans-serif;
+    --font-inter-variable: var(--font-inter), 'Inter', system-ui, sans-serif;
+
+    /* Layout & Radius */
+    --page-max-width: 1280px;
+    --radius-cards: 8px;
+    --radius-buttons: 12px;
+    --radius-inputs: 8px;
+    --radius-pills: 9999px;
+
+    /* Shadows */
+    --shadow-md: rgba(0, 0, 0, 0.4) 0px 10px 15px -3px, rgba(0, 0, 0, 0.2) 0px 4px 6px -4px;
+    --shadow-nav: rgba(0, 0, 0, 0.6) 0px 10px 15px -3px;
   }
 }
 
+@theme {
+  --color-void-black: #000000;
+  --color-ground-iron: #181818;
+  --color-carbon-veil: #212525;
+  --color-circuit-border: #485346;
+  --color-phosphor-blue-black: #1f2a33;
+  --color-lime-pulse: #7fee64;
+  --color-phosphor-white: #ddffdc;
+  --color-mint-frost: #def0dd;
+  --color-sage-60: #8cab87;
+  --color-sage-40: #677d64;
+  --color-moss-70: #9cbf93;
+  --color-moss-80: #aed2a4;
+  --color-fern-link: #859984;
+
+  --font-goga: var(--font-goga);
+  --font-inter-variable: var(--font-inter-variable);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #000000;
+  color: #ddffdc;
+  font-family: var(--font-inter-variable);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Modal Accent & Card Helpers */
+.modal-card {
+  background-color: #181818;
+  border: 1px solid #485346;
+  border-radius: 8px;
+}
+
+.lime-glow-text {
+  color: #7fee64;
+  text-shadow: 0 0 12px rgba(127, 238, 100, 0.3);
+}
+
+.lime-pill-cta {
+  background-color: #7fee64;
+  color: #181818;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all 0.2s ease-out;
+}
+
+.lime-pill-cta:hover {
+  background-color: #9bf387;
+  box-shadow: 0 0 16px rgba(127, 238, 100, 0.4);
 }

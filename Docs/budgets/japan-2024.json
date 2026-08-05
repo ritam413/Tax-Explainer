@@ -1,0 +1,63 @@
+{
+  "id": "jpn-2024-general-account",
+  "country": "Japan",
+  "year": 2024,
+  "currency": "¥",
+  "totalBudget": 112.57,
+  "sectors": [
+    {
+      "id": "jpn-sec-social",
+      "category": "Social Security & Aging Population Support",
+      "allocatedAmount": 37.72,
+      "priorYearAmount": 36.89,
+      "growthPercentage": 2.25,
+      "percentageOfTotal": 33.51,
+      "description": "Healthcare for elderly, national pensions, and childcare."
+    },
+    {
+      "id": "jpn-sec-debt",
+      "category": "National Debt Servicing",
+      "allocatedAmount": 27.00,
+      "priorYearAmount": 25.25,
+      "growthPercentage": 6.93,
+      "percentageOfTotal": 23.98,
+      "description": "JGB bond interest payments and principal redemptions."
+    },
+    {
+      "id": "jpn-sec-defense",
+      "category": "Defense Capability Modernization",
+      "allocatedAmount": 7.92,
+      "priorYearAmount": 6.82,
+      "growthPercentage": 16.13,
+      "percentageOfTotal": 7.04,
+      "description": "Self-Defense Forces equipment and stand-off defense capabilities."
+    },
+    {
+      "id": "jpn-sec-local",
+      "category": "Local Allocation Tax Grants",
+      "allocatedAmount": 17.30,
+      "priorYearAmount": 16.40,
+      "growthPercentage": 5.49,
+      "percentageOfTotal": 15.37,
+      "description": "Financial support transfers to prefecture governments."
+    },
+    {
+      "id": "jpn-sec-public-works",
+      "category": "Public Works & Disaster Resilience",
+      "allocatedAmount": 6.20,
+      "priorYearAmount": 6.06,
+      "growthPercentage": 2.31,
+      "percentageOfTotal": 5.51,
+      "description": "National land resilience and disaster prevention."
+    },
+    {
+      "id": "jpn-sec-tech-gx",
+      "category": "Green Transformation (GX) & Semiconductors",
+      "allocatedAmount": 0.05,
+      "priorYearAmount": 0.00,
+      "growthPercentage": 100.0,
+      "percentageOfTotal": 0.04,
+      "description": "Initial green energy subsidies."
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "ind-2024-union-budget",
+  "country": "India",
+  "year": 2024,
+  "currency": "₹",
+  "totalBudget": 45.03,
+  "sectors": [
+    {
+      "id": "sec-interest",
+      "category": "Interest Payments & Debt Servicing",
+      "allocatedAmount": 10.20,
+      "priorYearAmount": 9.28,
+      "growthPercentage": 9.91,
+      "percentageOfTotal": 22.65,
+      "description": "Annual interest obligations on national debt."
+    },
+    {
+      "id": "sec-defence",
+      "category": "Defence & Security",
+      "allocatedAmount": 5.75,
+      "priorYearAmount": 5.43,
+      "growthPercentage": 5.89,
+      "percentageOfTotal": 12.77,
+      "description": "Capital equipment acquisitions and armed forces pensions."
+    },
+    {
+      "id": "sec-transport",
+      "category": "Transport & Infrastructure",
+      "allocatedAmount": 4.50,
+      "priorYearAmount": 3.70,
+      "growthPercentage": 21.62,
+      "percentageOfTotal": 9.99,
+      "description": "Highways, railways, and port connectivity corridor projects."
+    },
+    {
+      "id": "sec-rural",
+      "category": "Rural Development & Agriculture",
+      "allocatedAmount": 4.00,
+      "priorYearAmount": 3.80,
+      "growthPercentage": 5.26,
+      "percentageOfTotal": 8.88,
+      "description": "Agricultural schemes, rural housing, and MGNREGA employment."
+    },
+    {
+      "id": "sec-energy",
+      "category": "Energy, Solar & Clean Tech",
+      "allocatedAmount": 2.30,
+      "priorYearAmount": 1.95,
+      "growthPercentage": 17.95,
+      "percentageOfTotal": 5.11,
+      "description": "Solar grid subsidies and national green energy initiatives."
+    },
+    {
+      "id": "sec-education",
+      "category": "Education & Skill Building",
+      "allocatedAmount": 1.25,
+      "priorYearAmount": 1.12,
+      "growthPercentage": 11.61,
+      "percentageOfTotal": 2.78,
+      "description": "Primary and secondary school infrastructure and university expansion."
+    },
+    {
+      "id": "sec-health",
+      "category": "Healthcare & Sanitation",
+      "allocatedAmount": 1.02,
+      "priorYearAmount": 0.89,
+      "growthPercentage": 14.61,
+      "percentageOfTotal": 2.26,
+      "description": "Public health insurance and primary medical facilities."
+    },
+    {
+      "id": "sec-tech",
+      "category": "Semiconductors & Deep Tech",
+      "allocatedAmount": 0.01,
+      "priorYearAmount": 0.00,
+      "growthPercentage": 100.00,
+      "percentageOfTotal": 0.02,
+      "description": "Initial exploratory allocations for semiconductor research."
+    },
+    {
+      "id": "sec-legacy-post",
+      "category": "Legacy Post & Telegraph Infrastructure",
+      "allocatedAmount": 0.40,
+      "priorYearAmount": 0.42,
+      "growthPercentage": -4.76,
+      "percentageOfTotal": 0.89,
+      "description": "Traditional postal telegraph infrastructure operations."
+    }
+  ]
+}

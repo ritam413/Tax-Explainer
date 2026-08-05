@@ -1,0 +1,63 @@
+{
+  "id": "jpn-2026-general-account",
+  "country": "Japan",
+  "year": 2026,
+  "currency": "¥",
+  "totalBudget": 115.4,
+  "sectors": [
+    {
+      "id": "jpn-sec-social",
+      "category": "Social Security & Aging Population Support",
+      "allocatedAmount": 38.5,
+      "priorYearAmount": 37.7,
+      "growthPercentage": 2.12,
+      "percentageOfTotal": 33.36,
+      "description": "Pension funding, elderly healthcare coverage, and childcare support incentives."
+    },
+    {
+      "id": "jpn-sec-debt",
+      "category": "National Debt Servicing",
+      "allocatedAmount": 28.2,
+      "priorYearAmount": 27.0,
+      "growthPercentage": 4.44,
+      "percentageOfTotal": 24.44,
+      "description": "Japanese Government Bond (JGB) interest payments and principal redemptions."
+    },
+    {
+      "id": "jpn-sec-defense",
+      "category": "Defense Capability Modernization",
+      "allocatedAmount": 8.7,
+      "priorYearAmount": 7.9,
+      "growthPercentage": 10.13,
+      "percentageOfTotal": 7.54,
+      "description": "Counterstrike capability acquisition, cyber defense, and maritime patrol forces."
+    },
+    {
+      "id": "jpn-sec-local",
+      "category": "Local Allocation Tax Grants",
+      "allocatedAmount": 17.8,
+      "priorYearAmount": 17.3,
+      "growthPercentage": 2.89,
+      "percentageOfTotal": 15.42,
+      "description": "Tax revenue sharing transfers to prefecture and municipal governments."
+    },
+    {
+      "id": "jpn-sec-public-works",
+      "category": "Public Works & Disaster Resilience",
+      "allocatedAmount": 6.8,
+      "priorYearAmount": 6.2,
+      "growthPercentage": 9.68,
+      "percentageOfTotal": 5.89,
+      "description": "Earthquake hazard mitigation, flood control, and infrastructure renewals."
+    },
+    {
+      "id": "jpn-sec-tech-gx",
+      "category": "Green Transformation (GX) & Semiconductors",
+      "allocatedAmount": 3.4,
+      "priorYearAmount": 0.2,
+      "growthPercentage": 1600.0,
+      "percentageOfTotal": 2.95,
+      "description": "Domestic semiconductor manufacturing subsidies and clean energy transition."
+    }
+  ]
+}

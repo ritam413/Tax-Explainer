@@ -1,0 +1,54 @@
+{
+  "id": "rus-2026-federal-budget",
+  "country": "Russia",
+  "year": 2026,
+  "currency": "₽",
+  "totalBudget": 40.3,
+  "sectors": [
+    {
+      "id": "rus-sec-defense",
+      "category": "National Defense & Security Procurement",
+      "allocatedAmount": 12.8,
+      "priorYearAmount": 10.8,
+      "growthPercentage": 18.52,
+      "percentageOfTotal": 31.76,
+      "description": "Armed forces expenditure, military industrial production, and defense R&D."
+    },
+    {
+      "id": "rus-sec-social",
+      "category": "Social Policy & Pensions",
+      "allocatedAmount": 7.7,
+      "priorYearAmount": 7.5,
+      "growthPercentage": 2.67,
+      "percentageOfTotal": 19.11,
+      "description": "State pension fund subsidies, maternity capital, and targeted social welfare."
+    },
+    {
+      "id": "rus-sec-economy",
+      "category": "National Economy & Transport",
+      "allocatedAmount": 4.8,
+      "priorYearAmount": 4.2,
+      "growthPercentage": 14.29,
+      "percentageOfTotal": 11.91,
+      "description": "Import substitution incentives, railway networks, and Arctic trade infrastructure."
+    },
+    {
+      "id": "rus-sec-security",
+      "category": "National Security & Law Enforcement",
+      "allocatedAmount": 3.6,
+      "priorYearAmount": 3.4,
+      "growthPercentage": 5.88,
+      "percentageOfTotal": 8.93,
+      "description": "Internal security, border control forces, and emergency services."
+    },
+    {
+      "id": "rus-sec-health-edu",
+      "category": "Healthcare & Education",
+      "allocatedAmount": 3.2,
+      "priorYearAmount": 3.0,
+      "growthPercentage": 6.67,
+      "percentageOfTotal": 7.94,
+      "description": "Federal university grants, medical equipment, and regional healthcare."
+    }
+  ]
+}

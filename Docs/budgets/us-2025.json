@@ -1,0 +1,81 @@
+{
+  "id": "us-2025-federal-budget",
+  "country": "United States",
+  "year": 2025,
+  "currency": "$",
+  "totalBudget": 6900.0,
+  "sectors": [
+    {
+      "id": "us-sec-hhs",
+      "category": "Healthcare & Social Assistance",
+      "allocatedAmount": 1650.0,
+      "priorYearAmount": 1580.0,
+      "growthPercentage": 4.43,
+      "percentageOfTotal": 23.91,
+      "description": "Medicare, Medicaid, and public health security outlays."
+    },
+    {
+      "id": "us-sec-social-sec",
+      "category": "Social Security & Retirement",
+      "allocatedAmount": 1400.0,
+      "priorYearAmount": 1461.0,
+      "growthPercentage": -4.18,
+      "percentageOfTotal": 20.29,
+      "description": "Social security benefit outlays."
+    },
+    {
+      "id": "us-sec-defense",
+      "category": "National Defense & Military",
+      "allocatedAmount": 842.0,
+      "priorYearAmount": 874.0,
+      "growthPercentage": -3.66,
+      "percentageOfTotal": 12.20,
+      "description": "Department of Defense base budget allocations."
+    },
+    {
+      "id": "us-sec-treasury",
+      "category": "Net Interest on National Debt",
+      "allocatedAmount": 920.0,
+      "priorYearAmount": 882.0,
+      "growthPercentage": 4.31,
+      "percentageOfTotal": 13.33,
+      "description": "Annual interest servicing on national debt."
+    },
+    {
+      "id": "us-sec-veterans",
+      "category": "Veterans Affairs",
+      "allocatedAmount": 320.0,
+      "priorYearAmount": 302.0,
+      "growthPercentage": 5.96,
+      "percentageOfTotal": 4.64,
+      "description": "VA medical care and veterans pensions."
+    },
+    {
+      "id": "us-sec-education",
+      "category": "Education & Workforce Development",
+      "allocatedAmount": 248.0,
+      "priorYearAmount": 238.0,
+      "growthPercentage": 4.20,
+      "percentageOfTotal": 3.59,
+      "description": "Student loans and workforce training programs."
+    },
+    {
+      "id": "us-sec-transport",
+      "category": "Transportation & Infrastructure",
+      "allocatedAmount": 150.0,
+      "priorYearAmount": 140.0,
+      "growthPercentage": 7.14,
+      "percentageOfTotal": 2.17,
+      "description": "Federal transit grants and highway safety."
+    },
+    {
+      "id": "us-sec-ai-compute",
+      "category": "National AI Compute Initiative",
+      "allocatedAmount": 5.0,
+      "priorYearAmount": 0.5,
+      "growthPercentage": 900.0,
+      "percentageOfTotal": 0.07,
+      "description": "National AI research resource expansion."
+    }
+  ]
+}

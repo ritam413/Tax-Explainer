@@ -1,0 +1,81 @@
+{
+  "id": "us-2026-federal-budget",
+  "country": "United States",
+  "year": 2026,
+  "currency": "$",
+  "totalBudget": 7100.0,
+  "sectors": [
+    {
+      "id": "us-sec-hhs",
+      "category": "Healthcare & Social Assistance",
+      "allocatedAmount": 1720.0,
+      "priorYearAmount": 1600.0,
+      "growthPercentage": 7.50,
+      "percentageOfTotal": 24.23,
+      "description": "Medicare, Medicaid, public health security, and medical research grants."
+    },
+    {
+      "id": "us-sec-social-sec",
+      "category": "Social Security & Retirement",
+      "allocatedAmount": 1450.0,
+      "priorYearAmount": 1350.0,
+      "growthPercentage": 7.41,
+      "percentageOfTotal": 20.42,
+      "description": "Old-age, survivors, and disability insurance disbursements."
+    },
+    {
+      "id": "us-sec-defense",
+      "category": "National Defense & Military",
+      "allocatedAmount": 895.0,
+      "priorYearAmount": 842.0,
+      "growthPercentage": 6.29,
+      "percentageOfTotal": 12.61,
+      "description": "Department of Defense operations, R&D modernization, and military personnel."
+    },
+    {
+      "id": "us-sec-treasury",
+      "category": "Net Interest on National Debt",
+      "allocatedAmount": 960.0,
+      "priorYearAmount": 880.0,
+      "growthPercentage": 9.09,
+      "percentageOfTotal": 13.52,
+      "description": "Federal interest payments on treasury bonds and public debt."
+    },
+    {
+      "id": "us-sec-veterans",
+      "category": "Veterans Affairs",
+      "allocatedAmount": 340.0,
+      "priorYearAmount": 300.0,
+      "growthPercentage": 13.33,
+      "percentageOfTotal": 4.79,
+      "description": "VA medical care, disability compensation, and veteran benefits."
+    },
+    {
+      "id": "us-sec-education",
+      "category": "Education & Workforce Development",
+      "allocatedAmount": 260.0,
+      "priorYearAmount": 238.0,
+      "growthPercentage": 9.24,
+      "percentageOfTotal": 3.66,
+      "description": "Pell grants, K-12 Title I funding, and vocational education."
+    },
+    {
+      "id": "us-sec-transport",
+      "category": "Transportation & Infrastructure",
+      "allocatedAmount": 160.0,
+      "priorYearAmount": 140.0,
+      "growthPercentage": 14.29,
+      "percentageOfTotal": 2.25,
+      "description": "Federal Highway Administration, FAA air travel safety, and transit infrastructure."
+    },
+    {
+      "id": "us-sec-ai-compute",
+      "category": "National AI Compute Initiative",
+      "allocatedAmount": 85.0,
+      "priorYearAmount": 5.0,
+      "growthPercentage": 1600.0,
+      "percentageOfTotal": 1.20,
+      "description": "Federal AI supercomputing infrastructure, National AI Research Resource (NAIRR)."
+    }
+  ]
+}

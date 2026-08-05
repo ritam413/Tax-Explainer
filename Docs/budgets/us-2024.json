@@ -1,0 +1,81 @@
+{
+  "id": "us-2024-federal-budget",
+  "country": "United States",
+  "year": 2024,
+  "currency": "$",
+  "totalBudget": 6752.0,
+  "sectors": [
+    {
+      "id": "us-sec-hhs",
+      "category": "Healthcare & Social Assistance",
+      "allocatedAmount": 1580.0,
+      "priorYearAmount": 1490.0,
+      "growthPercentage": 6.04,
+      "percentageOfTotal": 23.40,
+      "description": "Medicare, Medicaid, and NIH medical research outlays."
+    },
+    {
+      "id": "us-sec-social-sec",
+      "category": "Social Security & Retirement",
+      "allocatedAmount": 1461.0,
+      "priorYearAmount": 1354.0,
+      "growthPercentage": 7.90,
+      "percentageOfTotal": 21.64,
+      "description": "Social security disability and retirement benefit disbursements."
+    },
+    {
+      "id": "us-sec-defense",
+      "category": "National Defense & Military",
+      "allocatedAmount": 874.0,
+      "priorYearAmount": 821.0,
+      "growthPercentage": 6.46,
+      "percentageOfTotal": 12.94,
+      "description": "Department of Defense procurement and military readiness."
+    },
+    {
+      "id": "us-sec-treasury",
+      "category": "Net Interest on National Debt",
+      "allocatedAmount": 882.0,
+      "priorYearAmount": 659.0,
+      "growthPercentage": 33.84,
+      "percentageOfTotal": 13.06,
+      "description": "Net interest paid on public debt obligations."
+    },
+    {
+      "id": "us-sec-veterans",
+      "category": "Veterans Affairs",
+      "allocatedAmount": 302.0,
+      "priorYearAmount": 274.0,
+      "growthPercentage": 10.22,
+      "percentageOfTotal": 4.47,
+      "description": "Veterans medical care, housing assistance, and disability."
+    },
+    {
+      "id": "us-sec-education",
+      "category": "Education & Workforce Development",
+      "allocatedAmount": 238.0,
+      "priorYearAmount": 220.0,
+      "growthPercentage": 8.18,
+      "percentageOfTotal": 3.52,
+      "description": "Higher education student financial aid and K-12 assistance."
+    },
+    {
+      "id": "us-sec-transport",
+      "category": "Transportation & Infrastructure",
+      "allocatedAmount": 140.0,
+      "priorYearAmount": 126.0,
+      "growthPercentage": 11.11,
+      "percentageOfTotal": 2.07,
+      "description": "Infrastructure investment, highway trust fund, and aviation."
+    },
+    {
+      "id": "us-sec-ai-compute",
+      "category": "National AI Compute Initiative",
+      "allocatedAmount": 0.5,
+      "priorYearAmount": 0.0,
+      "growthPercentage": 100.0,
+      "percentageOfTotal": 0.01,
+      "description": "Pilot federal AI compute grants."
+    }
+  ]
+}
