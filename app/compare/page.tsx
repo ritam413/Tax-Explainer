@@ -8,7 +8,9 @@ import { Sidebar } from '@/components/nav/Sidebar';
 import { MobileMenu } from '@/components/nav/MobileMenu';
 import { CompareVisualizer } from '@/components/budgets/CompareVisualizer';
 import { AiCompareCard } from '@/components/ai/AiCompareCard';
+import { BookmarkButton } from '@/components/bookmarks/BookmarkButton';
 import { ComparisonResponse } from '@/types/budget';
+
 
 const AVAILABLE_COUNTRIES = ['India', 'United States', 'Japan', 'Russia'];
 const AVAILABLE_YEARS = [2026, 2025, 2024];
@@ -78,7 +80,7 @@ export default function ComparePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#000000] text-[#ddffdc] flex flex-col font-inter-variable antialiased pb-16">
+    <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] flex flex-col font-inter-variable antialiased pb-16 transition-colors duration-200">
       {/* Global Navigation Shell */}
       <Navbar
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -97,32 +99,33 @@ export default function ComparePage() {
           <header className="pt-4">
             <Link
               href="/budgets"
-              className="inline-flex items-center gap-2 text-[#7fee64] hover:text-[#ddffdc] text-sm font-semibold mb-4 transition-colors"
+              className="inline-flex items-center gap-2 text-[var(--accent-pulse)] hover:text-[var(--text-primary)] text-sm font-semibold mb-4 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Budget Explorer
             </Link>
 
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#ddffdc] mb-3">
-              Country & Year Budget Comparison
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)] mb-3 font-goga">
+              Country &amp; Year Budget Comparison
             </h1>
-            <p className="text-sm text-[#8cab87] max-w-3xl">
+
+            <p className="text-sm text-[var(--text-secondary)] max-w-3xl">
               Side-by-side analysis of government budget datasets. Select baseline and target datasets to compute category deltas, percentage changes, inflation adjustments, and automated AI diff summaries.
             </p>
 
             {/* Selectors Bar */}
-            <div className="mt-6 bg-[#181818] border border-[#485346] rounded-xl p-5 shadow-lg space-y-4">
+            <div className="mt-6 modal-card p-5 shadow-lg space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-11 gap-4 items-center">
                 {/* Dataset A Selector */}
                 <div className="md:col-span-5 space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-[#9cbf93]">
+                  <label className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">
                     Baseline Dataset (A)
                   </label>
                   <div className="flex gap-2">
                     <select
                       value={countryA}
                       onChange={(e) => setCountryA(e.target.value)}
-                      className="flex-1 bg-[#212525] border border-[#485346] text-[#ddffdc] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#7fee64]"
+                      className="flex-1 bg-[var(--bg-hover)] border border-[var(--border-color)] text-[var(--text-primary)] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[var(--accent-pulse)]"
                     >
                       {AVAILABLE_COUNTRIES.map((c) => (
                         <option key={`a-${c}`} value={c}>
@@ -134,7 +137,7 @@ export default function ComparePage() {
                     <select
                       value={yearA}
                       onChange={(e) => setYearA(Number(e.target.value))}
-                      className="w-28 bg-[#212525] border border-[#485346] text-[#ddffdc] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#7fee64]"
+                      className="w-28 bg-[var(--bg-hover)] border border-[var(--border-color)] text-[var(--text-primary)] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[var(--accent-pulse)]"
                     >
                       {AVAILABLE_YEARS.map((y) => (
                         <option key={`ay-${y}`} value={y}>
@@ -149,7 +152,7 @@ export default function ComparePage() {
                 <div className="md:col-span-1 flex justify-center pt-4 md:pt-6">
                   <button
                     onClick={handleSwap}
-                    className="p-2.5 rounded-full bg-[#212525] border border-[#485346] text-[#8cab87] hover:text-[#7fee64] hover:border-[#7fee64] transition-all"
+                    className="p-2.5 rounded-full bg-[var(--bg-hover)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--accent-pulse)] hover:border-[var(--accent-pulse)] transition-all cursor-pointer"
                     title="Swap Datasets"
                   >
                     <ArrowLeftRight className="w-4 h-4" />
@@ -158,14 +161,14 @@ export default function ComparePage() {
 
                 {/* Dataset B Selector */}
                 <div className="md:col-span-5 space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-[#9cbf93]">
+                  <label className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">
                     Target Dataset (B)
                   </label>
                   <div className="flex gap-2">
                     <select
                       value={countryB}
                       onChange={(e) => setCountryB(e.target.value)}
-                      className="flex-1 bg-[#212525] border border-[#485346] text-[#ddffdc] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#7fee64]"
+                      className="flex-1 bg-[var(--bg-hover)] border border-[var(--border-color)] text-[var(--text-primary)] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[var(--accent-pulse)]"
                     >
                       {AVAILABLE_COUNTRIES.map((c) => (
                         <option key={`b-${c}`} value={c}>
@@ -177,7 +180,7 @@ export default function ComparePage() {
                     <select
                       value={yearB}
                       onChange={(e) => setYearB(Number(e.target.value))}
-                      className="w-28 bg-[#212525] border border-[#485346] text-[#ddffdc] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[#7fee64]"
+                      className="w-28 bg-[var(--bg-hover)] border border-[var(--border-color)] text-[var(--text-primary)] text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-[var(--accent-pulse)]"
                     >
                       {AVAILABLE_YEARS.map((y) => (
                         <option key={`by-${y}`} value={y}>
@@ -190,30 +193,30 @@ export default function ComparePage() {
               </div>
 
               {/* Presets & Inflation Rate Control */}
-              <div className="pt-3 border-t border-[#2a3628] flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div className="pt-3 border-t border-[var(--border-subtle)] flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-[#677d64] font-semibold">Quick Presets:</span>
+                  <span className="text-[var(--text-muted)] font-semibold">Quick Presets:</span>
                   <button
                     onClick={() => applyPreset('India', 2026, 'India', 2025)}
-                    className="bg-[#212525] hover:bg-[#2e3737] text-[#8cab87] hover:text-[#7fee64] px-2.5 py-1 rounded border border-[#485346] transition-colors"
+                    className="bg-[var(--bg-hover)] hover:bg-[var(--badge-bg)] text-[var(--text-secondary)] hover:text-[var(--accent-pulse)] px-2.5 py-1 rounded border border-[var(--border-color)] transition-colors cursor-pointer"
                   >
                     India (2026 vs 2025)
                   </button>
                   <button
                     onClick={() => applyPreset('India', 2026, 'United States', 2026)}
-                    className="bg-[#212525] hover:bg-[#2e3737] text-[#8cab87] hover:text-[#7fee64] px-2.5 py-1 rounded border border-[#485346] transition-colors"
+                    className="bg-[var(--bg-hover)] hover:bg-[var(--badge-bg)] text-[var(--text-secondary)] hover:text-[var(--accent-pulse)] px-2.5 py-1 rounded border border-[var(--border-color)] transition-colors cursor-pointer"
                   >
                     India vs US (2026)
                   </button>
                   <button
                     onClick={() => applyPreset('India', 2026, 'India', 2026)}
-                    className="bg-[#212525] hover:bg-[#2e3737] text-[#8cab87] hover:text-[#7fee64] px-2.5 py-1 rounded border border-[#485346] transition-colors"
+                    className="bg-[var(--bg-hover)] hover:bg-[var(--badge-bg)] text-[var(--text-secondary)] hover:text-[var(--accent-pulse)] px-2.5 py-1 rounded border border-[var(--border-color)] transition-colors cursor-pointer"
                   >
                     Identical Test (2026 vs 2026)
                   </button>
                 </div>
 
-                <div className="flex items-center gap-2 text-[#8cab87]">
+                <div className="flex items-center gap-2 text-[var(--text-secondary)]">
                   <label htmlFor="inflation">Est. Inflation Rate:</label>
                   <input
                     id="inflation"
@@ -221,7 +224,7 @@ export default function ComparePage() {
                     step="0.5"
                     value={inflationRate}
                     onChange={(e) => setInflationRate(Number(e.target.value))}
-                    className="w-16 bg-[#212525] border border-[#485346] text-[#ddffdc] text-xs px-2 py-1 rounded text-center"
+                    className="w-16 bg-[var(--bg-hover)] border border-[var(--border-color)] text-[var(--text-primary)] text-xs px-2 py-1 rounded text-center"
                   />
                   <span>%</span>
                 </div>
@@ -231,10 +234,10 @@ export default function ComparePage() {
 
           {/* Identical Dataset Edge-Case Alert Banner */}
           {isIdentical && (
-            <div className="bg-[#25231c] border border-[#fb923c]/40 rounded-xl p-4 flex items-start gap-3 text-xs text-[#fb923c]">
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 flex items-start gap-3 text-xs text-amber-400">
               <ShieldAlert className="w-5 h-5 shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-bold text-sm text-[#ffedd5]">Identical Datasets Selected</h4>
+                <h4 className="font-bold text-sm text-amber-300">Identical Datasets Selected</h4>
                 <p>
                   You are comparing {countryA} ({yearA}) against itself. All category deltas and percentage changes are 0%.
                 </p>
@@ -244,17 +247,17 @@ export default function ComparePage() {
 
           {/* Loading state */}
           {isLoading && (
-            <div className="bg-[#181818] border border-[#485346] rounded-xl p-12 text-center flex flex-col items-center justify-center space-y-4">
-              <RefreshCw className="w-8 h-8 text-[#7fee64] animate-spin" />
-              <p className="text-sm text-[#8cab87]">Fetching datasets and calculating category deltas...</p>
+            <div className="modal-card p-12 text-center flex flex-col items-center justify-center space-y-4">
+              <RefreshCw className="w-8 h-8 text-[var(--accent-pulse)] animate-spin" />
+              <p className="text-sm text-[var(--text-secondary)]">Fetching datasets and calculating category deltas...</p>
             </div>
           )}
 
           {/* Error State */}
           {error && !isLoading && (
-            <div className="bg-[#251f1f] border border-[#ff6b6b]/40 rounded-xl p-6 text-center space-y-3">
-              <AlertCircle className="w-8 h-8 text-[#ff6b6b] mx-auto" />
-              <h3 className="text-lg font-bold text-[#ff6b6b]">Failed to load comparison</h3>
+            <div className="bg-rose-500/10 border border-rose-500/30 rounded-xl p-6 text-center space-y-3">
+              <AlertCircle className="w-8 h-8 text-rose-400 mx-auto" />
+              <h3 className="text-lg font-bold text-rose-400">Failed to load comparison</h3>
               <p className="text-xs text-[#8cab87] max-w-md mx-auto">{error}</p>
               <button
                 onClick={fetchComparison}
@@ -268,6 +271,35 @@ export default function ComparePage() {
           {/* Comparison Results */}
           {!isLoading && !error && comparisonData && (
             <div className="space-y-8">
+              {/* Header Bar with Bookmark Action */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-[#181818] border border-[#485346] rounded-xl">
+                <div>
+                  <h3 className="font-manrope font-bold text-lg text-white">
+                    {comparisonData.datasetA.country} ({comparisonData.datasetA.year}) vs {comparisonData.datasetB.country} ({comparisonData.datasetB.year})
+                  </h3>
+                  <p className="text-xs text-[#8cab87]">
+                    Total budget delta: {comparisonData.totalDelta >= 0 ? '+' : ''}{comparisonData.totalDelta.toFixed(2)} Lakh Cr ({comparisonData.totalPercentageChange >= 0 ? '+' : ''}{comparisonData.totalPercentageChange.toFixed(2)}%)
+                  </p>
+                </div>
+                <BookmarkButton
+                  itemType="comparison"
+                  itemId={`compare-${comparisonData.datasetA.country.toLowerCase()}-${comparisonData.datasetA.year}-${comparisonData.datasetB.country.toLowerCase()}-${comparisonData.datasetB.year}`}
+                  title={`${comparisonData.datasetA.country} ${comparisonData.datasetA.year} vs ${comparisonData.datasetB.country} ${comparisonData.datasetB.year}`}
+                  subtitle={`Budget Comparison • ${comparisonData.totalPercentageChange >= 0 ? '+' : ''}${comparisonData.totalPercentageChange.toFixed(1)}% Delta`}
+                  metadata={{
+                    countryA: comparisonData.datasetA.country,
+                    yearA: comparisonData.datasetA.year,
+                    countryB: comparisonData.datasetB.country,
+                    yearB: comparisonData.datasetB.year,
+                    totalDelta: comparisonData.totalDelta,
+                    sectorCount: comparisonData.sectorDeltas.length,
+                    description: `Comparison between ${comparisonData.datasetA.country} (${comparisonData.datasetA.year}) and ${comparisonData.datasetB.country} (${comparisonData.datasetB.year}).`,
+                  }}
+                  showLabel
+                  size="md"
+                />
+              </div>
+
               {/* Automated AI Diff Summary Card */}
               <AiCompareCard
                 datasetA={comparisonData.datasetA}

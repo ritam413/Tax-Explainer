@@ -160,33 +160,33 @@ export const AiCompareCard: React.FC<AiCompareCardProps> = ({
   }, [datasetA.country, datasetA.year, datasetB.country, datasetB.year]);
 
   return (
-    <div className="bg-[#181818] border border-[#485346] rounded-xl p-6 shadow-xl relative overflow-hidden">
+    <div className="modal-card p-6 shadow-xl relative overflow-hidden transition-colors duration-200">
       {/* Background Glow */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-[#7fee64]/5 rounded-full blur-2xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--accent-pulse)]/5 rounded-full blur-2xl pointer-events-none" />
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-4 border-b border-[#2a3628] pb-3">
+      <div className="flex items-center justify-between mb-4 border-b border-[var(--border-subtle)] pb-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-[#7fee64]/10 border border-[#7fee64]/30 flex items-center justify-center text-[#7fee64]">
+          <div className="w-8 h-8 rounded-lg bg-[var(--badge-bg)] border border-[var(--badge-border)] flex items-center justify-center text-[var(--accent-pulse)]">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-[#ddffdc] flex items-center gap-2">
+            <h3 className="text-base font-bold text-[var(--text-primary)] flex items-center gap-2">
               Automated AI Diff Summary
               {isIdentical && (
-                <span className="text-[10px] bg-[#485346]/40 text-[#8cab87] border border-[#485346] px-2 py-0.5 rounded-full">
+                <span className="text-[10px] bg-[var(--bg-hover)] text-[var(--text-secondary)] border border-[var(--border-color)] px-2 py-0.5 rounded-full">
                   Zero-Delta Notice
                 </span>
               )}
             </h3>
-            <p className="text-xs text-[#8cab87]">Grounded synthesis powered by Gemini public finance AI</p>
+            <p className="text-xs text-[var(--text-secondary)]">Grounded synthesis powered by Gemini public finance AI</p>
           </div>
         </div>
 
         {!isLoading && (
           <button
             onClick={fetchAIExplanation}
-            className="text-xs text-[#8cab87] hover:text-[#7fee64] flex items-center gap-1 transition-colors px-2 py-1 rounded bg-[#212525]"
+            className="text-xs text-[var(--text-secondary)] hover:text-[var(--accent-pulse)] flex items-center gap-1 transition-colors px-2 py-1 rounded bg-[var(--bg-hover)] cursor-pointer"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>Regenerate</span>
@@ -197,20 +197,20 @@ export const AiCompareCard: React.FC<AiCompareCardProps> = ({
       {/* Loading State */}
       {isLoading && (
         <div className="py-6 flex flex-col items-center justify-center space-y-3">
-          <div className="flex items-center gap-2 text-[#7fee64] animate-pulse">
+          <div className="flex items-center gap-2 text-[var(--accent-pulse)] animate-pulse">
             <Bot className="w-5 h-5" />
             <span className="text-sm font-semibold">Analyzing budget deltas and generating AI explanation...</span>
           </div>
-          <div className="w-full max-w-md bg-[#212525] h-1.5 rounded-full overflow-hidden">
-            <div className="bg-[#7fee64] h-full animate-pulse w-3/4 rounded-full" />
+          <div className="w-full max-w-md bg-[var(--bg-hover)] h-1.5 rounded-full overflow-hidden">
+            <div className="bg-[var(--accent-pulse)] h-full animate-pulse w-3/4 rounded-full" />
           </div>
         </div>
       )}
 
       {/* Rate Limited State */}
       {isRateLimited && (
-        <div className="bg-[#251f1f] border border-[#ff6b6b]/30 rounded-lg p-4 text-xs text-[#ff6b6b] flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-[#ff6b6b] shrink-0 mt-0.5" />
+        <div className="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4 text-xs text-rose-400 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
           <div>
             <h4 className="font-bold mb-1">Rate Limit Exceeded (HTTP 429)</h4>
             <p>You have reached the maximum AI request limit. Chart comparison tools remain operational.</p>
@@ -221,12 +221,12 @@ export const AiCompareCard: React.FC<AiCompareCardProps> = ({
       {/* Content display */}
       {!isLoading && explanation && (
         <div className="space-y-3" aria-live="polite">
-          <p className="text-sm text-[#ddffdc] leading-relaxed font-normal">
+          <p className="text-sm text-[var(--text-primary)] leading-relaxed font-normal">
             {explanation}
           </p>
 
-          <div className="flex items-center gap-2 pt-2 text-[11px] text-[#677d64]">
-            <CheckCircle2 className="w-3.5 h-3.5 text-[#7fee64]" />
+          <div className="flex items-center gap-2 pt-2 text-[11px] text-[var(--text-muted)]">
+            <CheckCircle2 className="w-3.5 h-3.5 text-[var(--accent-pulse)]" />
             <span>Strict Grounding Safeguard: Explanation derived exclusively from numeric dataset deltas.</span>
           </div>
         </div>

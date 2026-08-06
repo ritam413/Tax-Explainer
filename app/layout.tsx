@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Manrope, Inter } from "next/font/google";
 import { Agentation } from "agentation";
+import { AppProviders } from "@/components/providers/AppProviders";
+import { AuthModal } from "@/components/ui/AuthModal";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -28,13 +30,41 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${manrope.variable} ${inter.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-[#000000] text-[#ddffdc]">
-        {children}
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var localTheme = localStorage.getItem('theme_preference');
+                  var theme = localTheme === 'light' ? 'light' : 'dark';
+                  if (theme === 'light') {
+                    document.documentElement.classList.add('light');
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.setAttribute('data-theme', 'light');
+                  } else {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.classList.remove('light');
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="min-h-full flex flex-col transition-colors duration-200">
+        <AppProviders>
+          {children}
+          <AuthModal />
+        </AppProviders>
         {process.env.NODE_ENV === "development" && <Agentation />}
       </body>
     </html>
   );
 }
+
 
 

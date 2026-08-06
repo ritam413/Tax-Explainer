@@ -3,7 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { X, LayoutDashboard, Search, SlidersHorizontal, ArrowLeftRight, Bookmark, Sparkles } from 'lucide-react';
+import { X, LayoutDashboard, Search, SlidersHorizontal, ArrowLeftRight, Bookmark, Settings, Sparkles } from 'lucide-react';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -14,8 +15,8 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
 
   const navLinkClass = "flex items-center gap-3 px-4 py-3 rounded-[8px] font-medium text-[15px]";
-  const activeClass = "bg-[#212525] text-[#7fee64] font-semibold border border-[#7fee64]/30";
-  const inactiveClass = "text-[#8cab87] hover:bg-[#212525] hover:text-[#ddffdc]";
+  const activeClass = "bg-[var(--bg-hover)] text-[var(--accent-pulse)] font-semibold border border-[var(--border-color)]";
+  const inactiveClass = "text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]";
 
   if (!isOpen) return null;
 
@@ -28,19 +29,19 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
       />
 
       {/* Drawer Menu */}
-      <div className="relative w-full max-w-[320px] bg-[#181818] border-l border-[#485346] h-full p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-200">
+      <div className="relative w-full max-w-[320px] bg-[var(--bg-card)] border-l border-[var(--border-color)] h-full p-6 shadow-2xl flex flex-col justify-between z-10 animate-in slide-in-from-right duration-200">
         <div>
           {/* Header */}
-          <div className="flex items-center justify-between pb-6 border-b border-[#1f2a33] mb-6">
+          <div className="flex items-center justify-between pb-6 border-b border-[var(--border-subtle)] mb-6">
             <div className="flex items-center gap-2">
-              <div className="w-3.5 h-3.5 rounded-[2px] bg-[#7fee64]" />
-              <span className="font-manrope font-bold text-[18px] text-[#ddffdc]">
+              <div className="w-3.5 h-3.5 rounded-[2px] bg-[var(--accent-pulse)]" />
+              <span className="font-manrope font-bold text-[18px] text-[var(--text-primary)]">
                 Tx Expliner
               </span>
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-md hover:bg-[#212525] text-[#ddffdc]"
+              className="p-1.5 rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)]"
               aria-label="Close menu"
             >
               <X className="w-5 h-5" />
@@ -54,7 +55,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               onClick={onClose}
               className={`${navLinkClass} ${pathname === '/' ? activeClass : inactiveClass}`}
             >
-              <LayoutDashboard className={`w-4 h-4 ${pathname === '/' ? 'text-[#7fee64]' : 'text-[#677d64]'}`} />
+              <LayoutDashboard className={`w-4 h-4 ${pathname === '/' ? 'text-[var(--accent-pulse)]' : 'text-[var(--text-muted)]'}`} />
               Dashboard
             </Link>
             <Link
@@ -62,15 +63,15 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               onClick={onClose}
               className={`${navLinkClass} ${pathname === '/budgets' ? activeClass : inactiveClass}`}
             >
-              <Search className={`w-4 h-4 ${pathname === '/budgets' ? 'text-[#7fee64]' : 'text-[#677d64]'}`} />
+              <Search className={`w-4 h-4 ${pathname === '/budgets' ? 'text-[var(--accent-pulse)]' : 'text-[var(--text-muted)]'}`} />
               Budget Search
             </Link>
             <Link
-              href="#simulator"
+              href="/simulator"
               onClick={onClose}
-              className={`${navLinkClass} ${inactiveClass}`}
+              className={`${navLinkClass} ${pathname === '/simulator' ? activeClass : inactiveClass}`}
             >
-              <SlidersHorizontal className="w-4 h-4 text-[#677d64]" />
+              <SlidersHorizontal className={`w-4 h-4 ${pathname === '/simulator' ? 'text-[var(--accent-pulse)]' : 'text-[var(--text-muted)]'}`} />
               AI Simulator
             </Link>
             <Link
@@ -78,29 +79,45 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
               onClick={onClose}
               className={`${navLinkClass} ${pathname === '/compare' ? activeClass : inactiveClass}`}
             >
-              <ArrowLeftRight className={`w-4 h-4 ${pathname === '/compare' ? 'text-[#7fee64]' : 'text-[#677d64]'}`} />
+              <ArrowLeftRight className={`w-4 h-4 ${pathname === '/compare' ? 'text-[var(--accent-pulse)]' : 'text-[var(--text-muted)]'}`} />
               Year Compare
             </Link>
             <Link
-              href="#bookmarks"
+              href="/bookmarks"
               onClick={onClose}
-              className={`${navLinkClass} ${inactiveClass}`}
+              className={`${navLinkClass} ${pathname === '/bookmarks' ? activeClass : inactiveClass}`}
             >
-              <Bookmark className="w-4 h-4 text-[#677d64]" />
-              Saved Sectors
+              <Bookmark className={`w-4 h-4 ${pathname === '/bookmarks' ? 'text-[var(--accent-pulse)]' : 'text-[var(--text-muted)]'}`} />
+              Saved Bookmarks
+            </Link>
+            <Link
+              href="/profile"
+              onClick={onClose}
+              className={`${navLinkClass} ${pathname === '/profile' || pathname === '/settings' ? activeClass : inactiveClass}`}
+            >
+              <Settings className={`w-4 h-4 ${pathname === '/profile' || pathname === '/settings' ? 'text-[var(--accent-pulse)]' : 'text-[var(--text-muted)]'}`} />
+              Profile & Settings
             </Link>
           </div>
         </div>
 
-        {/* Footer Badge */}
-        <div className="bg-[#212525] border border-[#485346] p-4 rounded-[8px] text-center">
-          <div className="flex items-center justify-center gap-1.5 text-[12px] font-semibold text-[#ddffdc] mb-1">
-            <Sparkles className="w-4 h-4 text-[#7fee64]" />
-            <span>India Union Budget 2026</span>
+        {/* Footer Badge & Theme Switcher */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between px-2">
+            <span className="text-xs text-[var(--text-secondary)] font-medium">Theme Mode</span>
+            <ThemeToggle showLabel />
           </div>
-          <p className="text-[11px] text-[#8cab87]">Sub-2s cached rendering enabled.</p>
+
+          <div className="bg-[var(--bg-hover)] border border-[var(--border-color)] p-4 rounded-[8px] text-center">
+            <div className="flex items-center justify-center gap-1.5 text-[12px] font-semibold text-[var(--text-primary)] mb-1">
+              <Sparkles className="w-4 h-4 text-[var(--accent-pulse)]" />
+              <span>India Union Budget 2026</span>
+            </div>
+            <p className="text-[11px] text-[var(--text-secondary)]">Sub-2s cached rendering enabled.</p>
+          </div>
         </div>
       </div>
     </div>
   );
 };
+

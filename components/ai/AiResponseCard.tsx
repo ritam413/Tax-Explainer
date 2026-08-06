@@ -321,18 +321,18 @@ export function AiResponseCard({
         <Toast message={toastMessage} type="error" onClose={() => setToastMessage(null)} />
       )}
 
-      <div className="w-full rounded-xl bg-[#181818] border border-[#485346] p-5 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all text-[#ddffdc]">
+      <div className="w-full modal-card p-5 shadow-xl transition-colors duration-200 text-[var(--text-primary)]">
         {/* Header */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center w-7 h-7 rounded-full bg-[#ea4335]/20 text-[#ea4335]">
+            <div className="flex items-center justify-center w-7 h-7 rounded-full bg-[var(--badge-bg)] text-[var(--accent-pulse)]">
               <Sparkles className="w-4 h-4" />
             </div>
-            <span className="text-xs uppercase tracking-wider font-semibold text-[#7fee64]">
+            <span className="text-xs uppercase tracking-wider font-semibold text-[var(--accent-pulse)]">
               AI Explanation
             </span>
           </div>
-          <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded-full bg-[#212525] border border-[#485346] text-[#8cab87]">
+          <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded-full bg-[var(--badge-bg)] border border-[var(--badge-border)] text-[var(--text-secondary)]">
             {category}
           </span>
         </div>
@@ -340,45 +340,48 @@ export function AiResponseCard({
         {/* Streaming Body / Typing Indicator */}
         <div
           ref={liveRegionRef}
+          role="status"
           aria-live="polite"
           aria-atomic="false"
-          className="text-sm leading-relaxed text-[#ddffdc] min-h-[50px]"
+          aria-busy={isLoading}
+          aria-label={`AI explanation for ${category}`}
+          className="text-sm leading-relaxed text-[var(--text-primary)] min-h-[50px]"
         >
           {isLoading && !explanationText ? (
-            <div className="flex items-center gap-2 py-3 text-[#8cab87]">
+            <div className="flex items-center gap-2 py-3 text-[var(--text-secondary)]">
               <div className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-[#ea4335] animate-ping" />
-                <span className="w-2 h-2 rounded-full bg-[#7fee64] animate-bounce [animation-delay:0.2s]" />
-                <span className="w-2 h-2 rounded-full bg-[#7fee64] animate-bounce [animation-delay:0.4s]" />
+                <span className="w-2 h-2 rounded-full bg-[var(--accent-pulse)] animate-ping" />
+                <span className="w-2 h-2 rounded-full bg-[var(--accent-pulse)] animate-bounce [animation-delay:0.2s]" />
+                <span className="w-2 h-2 rounded-full bg-[var(--accent-pulse)] animate-bounce [animation-delay:0.4s]" />
               </div>
-              <span className="text-xs italic text-[#8cab87]">Analyzing budget figures...</span>
+              <span className="text-xs italic text-[var(--text-secondary)]">Analyzing budget figures...</span>
             </div>
           ) : (
-            <p className="whitespace-pre-line font-normal text-[#ddffdc]">
+            <p className="whitespace-pre-line font-normal text-[var(--text-primary)]">
               {explanationText}
-              {isLoading && <span className="inline-block w-1.5 h-4 ml-1 bg-[#ea4335] animate-pulse" />}
+              {isLoading && <span className="inline-block w-1.5 h-4 ml-1 bg-[var(--accent-pulse)] animate-pulse" />}
             </p>
           )}
         </div>
 
         {/* Chat History Messages */}
         {chatHistory.length > 0 && (
-          <div className="mt-4 pt-3 border-t border-[#485346] space-y-3">
+          <div className="mt-4 pt-3 border-t border-[var(--border-subtle)] space-y-3">
             {chatHistory.map((msg, idx) => (
               <div
                 key={idx}
                 className={`text-xs p-3 rounded-xl ${
                   msg.role === "user"
-                    ? "bg-[#212525] border border-[#485346] text-[#ddffdc] ml-4 font-medium"
-                    : "bg-[#1f2a33]/60 border border-[#485346]/80 text-[#def0dd] mr-4"
+                    ? "bg-[var(--bg-hover)] border border-[var(--border-color)] text-[var(--text-primary)] ml-4 font-medium"
+                    : "bg-[var(--badge-bg)] border border-[var(--badge-border)] text-[var(--text-primary)] mr-4"
                 }`}
               >
-                <div className="text-[10px] uppercase font-bold text-[#8cab87] mb-1">
+                <div className="text-[10px] uppercase font-bold text-[var(--text-secondary)] mb-1">
                   {msg.role === "user" ? "You" : "AI Assistant"}
                 </div>
                 <div>
                   {msg.text || (
-                    <span className="italic text-[#8cab87]">Thinking...</span>
+                    <span className="italic text-[var(--text-secondary)]">Thinking...</span>
                   )}
                 </div>
               </div>
@@ -388,20 +391,20 @@ export function AiResponseCard({
 
         {/* Follow-up Controls */}
         {!isLoading && explanationText && (
-          <div className="mt-4 pt-3 border-t border-[#485346] flex flex-col gap-2">
+          <div className="mt-4 pt-3 border-t border-[var(--border-subtle)] flex flex-col gap-2">
             {!showChatInput && chatHistory.length === 0 ? (
               <button
                 onClick={() => setShowChatInput(true)}
-                className="self-start inline-flex items-center gap-1.5 text-xs font-semibold text-[#7fee64] hover:text-[#ddffdc] transition-colors cursor-pointer"
+                className="self-start inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--accent-pulse)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
                 Ask a follow-up question ({remainingFollowUps} left)
               </button>
             ) : (
               <form onSubmit={handleFollowUpSubmit} className="space-y-2">
-                <div className="flex items-center justify-between text-[11px] text-[#8cab87]">
+                <div className="flex items-center justify-between text-[11px] text-[var(--text-secondary)]">
                   <span>Follow-up discussion</span>
-                  <span className="font-semibold text-[#ddffdc]">
+                  <span className="font-semibold text-[var(--text-primary)]">
                     {remainingFollowUps} {remainingFollowUps === 1 ? "question" : "questions"} left
                   </span>
                 </div>
@@ -416,13 +419,13 @@ export function AiResponseCard({
                         ? "Ask e.g. Why did this allocation increase?"
                         : "Maximum 3 follow-ups reached for this session."
                     }
-                    className="w-full text-xs px-3 py-2.5 pr-10 rounded-xl bg-[#212525] border border-[#485346] text-[#ddffdc] placeholder:text-[#677d64] focus:outline-none focus:border-[#7fee64] disabled:opacity-60 transition-all"
+                    className="w-full text-xs px-3 py-2.5 pr-10 rounded-xl bg-[var(--bg-hover)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-pulse)] disabled:opacity-60 transition-all"
                   />
                   <button
                     type="submit"
                     disabled={!followUpInput.trim() || isChatLoading || remainingFollowUps <= 0}
                     aria-label="Send follow-up question"
-                    className="absolute right-1.5 p-1.5 rounded-lg bg-[#7fee64] text-[#181818] disabled:opacity-30 hover:bg-[#9bf387] transition-colors cursor-pointer"
+                    className="absolute right-1.5 p-1.5 rounded-lg lime-pill-cta text-xs cursor-pointer"
                   >
                     <Send className="w-3.5 h-3.5" />
                   </button>

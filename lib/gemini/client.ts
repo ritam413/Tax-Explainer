@@ -123,3 +123,44 @@ ${followUpMessage}
 
 Answer concisely in 2-3 sentences.`;
 }
+
+export function buildTradeoffPrompt(data: {
+  country: string;
+  year: number;
+  currency: string;
+  unit: string;
+  baselineTotalBudget: number;
+  deltas: Array<{
+    sectorId: string;
+    category?: string;
+    baselineAmount?: number;
+    newAmount: number;
+    deltaPercentage: number;
+  }>;
+}): string {
+  const deltaLines = data.deltas
+    .map((d) => {
+      const name = d.category || d.sectorId;
+      const base = d.baselineAmount !== undefined ? `${data.currency}${d.baselineAmount}` : 'baseline';
+      const net = `${data.currency}${d.newAmount}`;
+      const change = `${d.deltaPercentage > 0 ? '+' : ''}${d.deltaPercentage}%`;
+      return `- ${name}: ${base} → ${net} (${change})`;
+    })
+    .join('\n');
+
+  return `[SYSTEM INSTRUCTION: STRICT GROUNDING REQUIREMENT]
+You are a public finance AI advisor evaluating a citizen's hypothetical budget reallocation simulation.
+CRITICAL CONSTRAINT: Ground your analysis strictly in the numeric budget deltas listed below. Do NOT hallucinate figures or assume unverified statistics.
+
+HYPOTHETICAL BUDGET SIMULATION CONTEXT:
+- Country & Fiscal Year: ${data.country} ${data.year}
+- Total Budget Baseline: ${data.currency}${data.baselineTotalBudget} ${data.unit}
+- Modified Sectors (Zero-Sum Reallocation):
+${deltaLines || '- No sector changes detected'}
+
+EXPLANATION FORMAT RULES:
+1. Provide a clear 3-4 sentence trade-off analysis explaining the policy consequences of these sector budget shifts.
+2. Explain which sectors benefit and which public services will face cuts or extra funding.
+3. Assess the socio-economic impacts of this budget shift in plain, clear citizen-friendly language.
+4. Conclude with a neutral statement on public policy balance.`;
+}

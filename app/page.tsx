@@ -42,7 +42,7 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#000000] text-[#ddffdc] flex flex-col font-inter-variable antialiased pb-16">
+    <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] flex flex-col font-inter-variable antialiased pb-16 transition-colors duration-200">
       {/* Global Navigation Shell */}
       <Navbar
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -61,23 +61,23 @@ export default function DashboardPage() {
         {/* Right Content Area */}
         <div className="flex-1 space-y-8 min-w-0">
           {/* Top Banner Notice */}
-          <div className="bg-[#181818] border border-[#485346] rounded-[8px] p-4 flex items-center justify-between gap-4 shadow-md">
+          <div className="modal-card p-4 flex items-center justify-between gap-4 shadow-md transition-colors duration-200">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-[6px] bg-[#212525] text-[#7fee64]">
+              <div className="p-2 rounded-[6px] bg-[var(--badge-bg)] text-[var(--accent-pulse)]">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-[13px] font-semibold text-[#ddffdc]">
+                <span className="text-[13px] font-semibold text-[var(--text-primary)]">
                   Phase 1 Baseline: Union Budget 2026 Snapshot Active
                 </span>
-                <p className="text-[12px] text-[#8cab87]">
+                <p className="text-[12px] text-[var(--text-secondary)]">
                   Rendered under 2s target limit with Redis caching layer enabled.
                 </p>
               </div>
             </div>
 
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#7fee64]/10 border border-[#7fee64]/30 text-[#7fee64] text-[12px] font-semibold">
-              <ShieldCheck className="w-4 h-4 text-[#7fee64]" />
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--badge-bg)] border border-[var(--badge-border)] text-[var(--accent-pulse)] text-[12px] font-semibold">
+              <ShieldCheck className="w-4 h-4 text-[var(--accent-pulse)]" />
               <span>Verified Dataset</span>
             </div>
           </div>

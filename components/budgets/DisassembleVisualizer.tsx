@@ -84,7 +84,7 @@ const renderActiveShape = (props: any) => {
         x={lx + (cos >= 0 ? 8 : -8)}
         y={ly + 12}
         textAnchor={textAnchor}
-        fill="#ddffdc"
+        fill="var(--text-primary)"
         className="text-xs font-mono font-medium"
       >
         ${value}B ({percentageStr}%)
@@ -198,10 +198,10 @@ export function DisassembleVisualizer({ data, activeId, onSliceClick, onExplainC
             e.stopPropagation();
             onExplainClick();
           }}
-          className="absolute bottom-4 right-4 z-20 flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#111111] text-[#ffffff] font-medium text-xs shadow-[0_4px_12px_rgba(0,0,0,0.2)] hover:bg-[#ea4335] active:scale-95 transition-all border border-[rgba(255,255,255,0.15)] cursor-pointer group"
+          className="absolute bottom-4 right-4 z-20 flex items-center gap-2 px-4 py-2.5 rounded-full lime-pill-cta text-xs shadow-md cursor-pointer group"
           aria-label="Explain budget allocation with AI"
         >
-          <Sparkles className="w-4 h-4 text-[#ea4335] group-hover:text-white transition-colors" />
+          <Sparkles className="w-4 h-4 text-[var(--accent-text)]" />
           <span>Explain with AI</span>
         </button>
       )}

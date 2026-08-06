@@ -49,3 +49,12 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+
+# Local Agent & Docs
+.agent/
+CODEBASE.md
+tracker.md
+
+# Vitest
+vitest.config.ts
+vitest.setup.ts

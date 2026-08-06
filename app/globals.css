@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
 @layer base {
-  :root {
+  :root,
+  html.dark,
+  html[data-theme="dark"] {
     /* Modal Design Tokens - Phosphor Terminal Dark Theme */
     --color-void-black: #000000;
     --color-ground-iron: #181818;
@@ -20,6 +22,23 @@
     --color-deep-fern: #697368;
     --color-pine-15: #3e4a3c;
 
+    /* Theme Variable Aliases */
+    --bg-page: #000000;
+    --bg-card: #181818;
+    --bg-hover: #212525;
+    --border-color: #485346;
+    --border-subtle: #1f2a33;
+    --text-primary: #ddffdc;
+    --text-secondary: #8cab87;
+    --text-muted: #677d64;
+    --accent-pulse: #7fee64;
+    --accent-text: #181818;
+    --accent-bg: #7fee64;
+    --accent-hover: #9bf387;
+    --badge-bg: #212525;
+    --badge-border: #485346;
+    --badge-text: #aed2a4;
+
     /* Typography */
     --font-goga: var(--font-manrope), 'Space Grotesk', system-ui, sans-serif;
     --font-inter-variable: var(--font-inter), 'Inter', system-ui, sans-serif;
@@ -35,55 +54,138 @@
     --shadow-md: rgba(0, 0, 0, 0.4) 0px 10px 15px -3px, rgba(0, 0, 0, 0.2) 0px 4px 6px -4px;
     --shadow-nav: rgba(0, 0, 0, 0.6) 0px 10px 15px -3px;
   }
+
+  html.light,
+  html[data-theme="light"] {
+    /* Phosphor Mint Light Theme (WCAG 2.1 AA Compliant) */
+    --color-void-black: #f4f7f4;
+    --color-ground-iron: #ffffff;
+    --color-carbon-veil: #eaf2ea;
+    --color-circuit-border: #c8dac8;
+    --color-phosphor-blue-black: #dbe6db;
+    --color-charcoal-rust: #f2e9e9;
+    --color-lime-pulse: #15803d;
+    --color-phosphor-white: #111c10;
+    --color-mint-frost: #1e3a1d;
+    --color-sage-60: #3b523a;
+    --color-sage-40: #526a51;
+    --color-moss-70: #14532d;
+    --color-moss-80: #166534;
+    --color-fern-link: #15803d;
+    --color-deep-fern: #274026;
+    --color-pine-15: #d4e4d4;
+
+    /* Theme Variable Aliases */
+    --bg-page: #f4f7f4;
+    --bg-card: #ffffff;
+    --bg-hover: #eaf2ea;
+    --border-color: #c8dac8;
+    --border-subtle: #dbe6db;
+    --text-primary: #111c10;
+    --text-secondary: #3b523a;
+    --text-muted: #526a51;
+    --accent-pulse: #15803d;
+    --accent-text: #ffffff;
+    --accent-bg: #15803d;
+    --accent-hover: #166534;
+    --badge-bg: #eaf2ea;
+    --badge-border: #c8dac8;
+    --badge-text: #14532d;
+
+    /* Shadows */
+    --shadow-md: rgba(0, 0, 0, 0.08) 0px 8px 16px -2px, rgba(0, 0, 0, 0.04) 0px 2px 4px -1px;
+    --shadow-nav: rgba(0, 0, 0, 0.06) 0px 4px 12px -2px;
+  }
 }
 
 @theme {
-  --color-void-black: #000000;
-  --color-ground-iron: #181818;
-  --color-carbon-veil: #212525;
-  --color-circuit-border: #485346;
-  --color-phosphor-blue-black: #1f2a33;
-  --color-lime-pulse: #7fee64;
-  --color-phosphor-white: #ddffdc;
-  --color-mint-frost: #def0dd;
-  --color-sage-60: #8cab87;
-  --color-sage-40: #677d64;
-  --color-moss-70: #9cbf93;
-  --color-moss-80: #aed2a4;
-  --color-fern-link: #859984;
+  --color-void-black: var(--color-void-black);
+  --color-ground-iron: var(--color-ground-iron);
+  --color-carbon-veil: var(--color-carbon-veil);
+  --color-circuit-border: var(--color-circuit-border);
+  --color-phosphor-blue-black: var(--color-phosphor-blue-black);
+  --color-lime-pulse: var(--color-lime-pulse);
+  --color-phosphor-white: var(--color-phosphor-white);
+  --color-mint-frost: var(--color-mint-frost);
+  --color-sage-60: var(--color-sage-60);
+  --color-sage-40: var(--color-sage-40);
+  --color-moss-70: var(--color-moss-70);
+  --color-moss-80: var(--color-moss-80);
+  --color-fern-link: var(--color-fern-link);
 
   --font-goga: var(--font-goga);
   --font-inter-variable: var(--font-inter-variable);
 }
 
 body {
-  background-color: #000000;
-  color: #ddffdc;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
   font-family: var(--font-inter-variable);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Modal Accent & Card Helpers */
+/* Theme Card & Accent Helpers */
 .modal-card {
-  background-color: #181818;
-  border: 1px solid #485346;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .lime-glow-text {
-  color: #7fee64;
+  color: var(--accent-pulse);
   text-shadow: 0 0 12px rgba(127, 238, 100, 0.3);
 }
 
+html.light .lime-glow-text,
+html[data-theme="light"] .lime-glow-text {
+  text-shadow: none;
+}
+
 .lime-pill-cta {
-  background-color: #7fee64;
-  color: #181818;
+  background-color: var(--accent-bg);
+  color: var(--accent-text);
   border-radius: 9999px;
   font-weight: 500;
   transition: all 0.2s ease-out;
 }
 
 .lime-pill-cta:hover {
-  background-color: #9bf387;
-  box-shadow: 0 0 16px rgba(127, 238, 100, 0.4);
+  background-color: var(--accent-hover);
+  box-shadow: 0 0 16px rgba(127, 238, 100, 0.3);
+}
+
+/* ─── Keyboard Accessibility — Focus Ring ─────────────────────────────────── */
+
+/*
+  Visible focus ring for keyboard navigation using the Phosphor Terminal lime accent.
+  :focus-visible fires only on keyboard navigation (not mouse clicks), so mouse
+  users never see the ring while screen-reader / keyboard users always do.
+*/
+:focus-visible {
+  outline: 2px solid var(--accent-pulse);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default browser outline since we provide our own :focus-visible ring */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Inputs and textareas get a border glow instead of an outline ring */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+  border-color: var(--accent-pulse) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-pulse) 30%, transparent);
+}
+
+/* Range sliders: accent color + focus ring */
+input[type='range']:focus-visible {
+  outline: 2px solid var(--accent-pulse);
+  outline-offset: 3px;
+  box-shadow: none;
 }

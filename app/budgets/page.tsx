@@ -10,8 +10,10 @@ import { Sidebar } from "@/components/nav/Sidebar";
 import { MobileMenu } from "@/components/nav/MobileMenu";
 
 import { AiResponseCard } from "@/components/ai/AiResponseCard";
+import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
 
 interface BudgetCategory {
+
   id: string;
   name: string;
   value: number;
@@ -75,7 +77,7 @@ export default function BudgetsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#000000] text-[#ddffdc] flex flex-col font-inter-variable antialiased pb-16">
+    <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] flex flex-col font-inter-variable antialiased pb-16 transition-colors duration-200">
       
       {/* Global Navigation Shell */}
       <Navbar
@@ -156,6 +158,20 @@ export default function BudgetsPage() {
                     <div className="w-4 h-4 rounded-full" style={{ backgroundColor: activeCategory.color }} />
                     <h2 className="text-2xl font-bold font-goga">{activeCategory.name}</h2>
                   </div>
+                  <BookmarkButton
+                    itemType="sector"
+                    itemId={activeCategory.id}
+                    title={activeCategory.name}
+                    subtitle={`Federal Budget Category • $${activeCategory.value}B Allocation`}
+                    metadata={{
+                      category: activeCategory.name,
+                      allocatedAmount: activeCategory.value,
+                      country: 'India',
+                      year: 2026,
+                      unit: 'Billion',
+                    }}
+                    showLabel
+                  />
                 </div>
                 
                 <div className="flex-1 space-y-8">

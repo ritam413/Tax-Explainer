@@ -36,8 +36,38 @@ export interface AIExplainResponse {
 
 export interface SimulationDelta {
   sectorId: string;
+  category?: string;
+  baselineAmount?: number;
   newAmount: number;
   deltaPercentage: number;
+}
+
+export interface SimulatedSector extends SectorBudget {
+  simulatedAmount: number;
+  simulatedPercentage: number;
+  deltaAmount: number;
+  deltaPercentage: number;
+  isLocked: boolean;
+}
+
+export interface SimulationState {
+  datasetId: string;
+  country: string;
+  year: number;
+  currency: string;
+  unit: string;
+  baselineTotalBudget: number;
+  simulatedTotalBudget: number;
+  sectors: SimulatedSector[];
+}
+
+export interface TradeoffExplainPayload {
+  country: string;
+  year: number;
+  currency: string;
+  unit: string;
+  baselineTotalBudget: number;
+  simulationDeltas: SimulationDelta[];
 }
 
 export interface SectorComparisonItem {
@@ -82,5 +112,51 @@ export interface ComparisonResponse {
   sectorDeltas: SectorComparisonItem[];
   cached?: boolean;
 }
+
+export type BookmarkItemType = 'sector' | 'comparison' | 'simulation';
+
+export interface BookmarkItemMetadata {
+  category?: string;
+  allocatedAmount?: number;
+  priorYearAmount?: number;
+  growthPercentage?: number;
+  percentageOfTotal?: number;
+  country?: string;
+  year?: number;
+  currency?: string;
+  unit?: string;
+  countryA?: string;
+  yearA?: number;
+  countryB?: string;
+  yearB?: number;
+  totalDelta?: number;
+  sectorCount?: number;
+  description?: string;
+  isOrphaned?: boolean;
+  statusNote?: string;
+}
+
+export interface BookmarkItem {
+  id: string;
+  user_id: string;
+  item_type: BookmarkItemType;
+  item_id: string;
+  title: string;
+  subtitle: string;
+  created_at: string;
+  metadata: BookmarkItemMetadata;
+}
+
+export interface BookmarkResponse {
+  bookmarks?: BookmarkItem[];
+  bookmark?: BookmarkItem;
+  success?: boolean;
+  removedId?: string;
+  error?: {
+    code: string;
+    message: string;
+  };
+}
+
 
 

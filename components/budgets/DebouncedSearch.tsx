@@ -31,7 +31,7 @@ export function DebouncedSearch({ onSearch, isLoading = false }: DebouncedSearch
       </div>
       <input
         type="text"
-        className="block w-full pl-10 pr-10 py-2 border border-circuit-border rounded-md leading-5 bg-ground-iron text-phosphor-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-lime-pulse focus:border-lime-pulse sm:text-sm transition duration-150 ease-in-out"
+        className="block w-full pl-10 pr-10 py-2 border border-[var(--border-color)] rounded-md leading-5 bg-[var(--bg-hover)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--accent-pulse)] focus:border-[var(--accent-pulse)] sm:text-sm transition duration-150 ease-in-out"
         placeholder="Search budget categories..."
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}

@@ -160,10 +160,12 @@ export async function fetchBudgetDataset(country = 'India', year = 2026): Promis
   const filePath = path.join(process.cwd(), 'Docs', 'budgets', fileName);
 
   try {
-    if (fs.existsSync(filePath)) {
-      const fileContent = fs.readFileSync(filePath, 'utf-8');
-      const json = JSON.parse(fileContent);
-      return sanitizeBudgetDataset(json as BudgetDataset);
+    if (typeof window === 'undefined' && fs.existsSync) {
+      if (fs.existsSync(filePath)) {
+        const fileContent = fs.readFileSync(filePath, 'utf-8');
+        const json = JSON.parse(fileContent);
+        return sanitizeBudgetDataset(json as BudgetDataset);
+      }
     }
   } catch (err) {
     console.warn(`Could not read dataset file ${filePath}, falling back to defaults:`, err);

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getGeminiClient, buildExplanationPrompt } from '@/lib/gemini/client';
+import { getGeminiClient, buildExplanationPrompt, buildTradeoffPrompt } from '@/lib/gemini/client';
 import { checkRateLimit, getAIExplanationCache, setAIExplanationCache } from '@/lib/redis/client';
 
 export const runtime = 'nodejs';
@@ -16,14 +16,20 @@ export async function POST(req: NextRequest) {
       country,
       year,
       user_id,
+      simulationDelta,
+      unit,
+      currency,
+      baselineTotalBudget,
     } = body;
 
-    if (!category || allocatedAmount === undefined) {
+    const isSimulationTradeoff = Array.isArray(simulationDelta) && simulationDelta.length > 0;
+
+    if (!isSimulationTradeoff && (!category || allocatedAmount === undefined)) {
       return new Response(
         JSON.stringify({
           error: {
             code: 'INVALID_INPUT',
-            message: 'Category and allocatedAmount are required fields.',
+            message: 'Category and allocatedAmount (or simulationDelta) are required.',
           },
         }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
@@ -51,30 +57,34 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Cache Check: `ai_explain:{budget_id}:{version}`
+    // 2. Cache Check: Skip cache for simulation tradeoffs (dynamic per user input)
     const version = 'v1';
-    const cacheKeyId = budget_id || `${category.toLowerCase().replace(/\s+/g, '_')}_${year || 2025}`;
-    const cachedText = await getAIExplanationCache(cacheKeyId, version);
+    const cacheKeyId = isSimulationTradeoff
+      ? null
+      : budget_id || `${category.toLowerCase().replace(/\s+/g, '_')}_${year || 2025}`;
 
-    if (cachedText) {
-      const encoder = new TextEncoder();
-      const stream = new ReadableStream({
-        start(controller) {
-          controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify({ text: cachedText, cached: true })}\n\n`)
-          );
-          controller.enqueue(encoder.encode(`data: [DONE]\n\n`));
-          controller.close();
-        },
-      });
+    if (cacheKeyId) {
+      const cachedText = await getAIExplanationCache(cacheKeyId, version);
+      if (cachedText) {
+        const encoder = new TextEncoder();
+        const stream = new ReadableStream({
+          start(controller) {
+            controller.enqueue(
+              encoder.encode(`data: ${JSON.stringify({ text: cachedText, cached: true })}\n\n`)
+            );
+            controller.enqueue(encoder.encode(`data: [DONE]\n\n`));
+            controller.close();
+          },
+        });
 
-      return new Response(stream, {
-        headers: {
-          'Content-Type': 'text/event-stream',
-          'Cache-Control': 'no-cache, no-transform',
-          Connection: 'keep-alive',
-        },
-      });
+        return new Response(stream, {
+          headers: {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache, no-transform',
+            Connection: 'keep-alive',
+          },
+        });
+      }
     }
 
     // 3. Gemini API Integration
@@ -91,14 +101,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const prompt = buildExplanationPrompt({
-      category,
-      allocatedAmount,
-      priorYearAmount,
-      growthPercentage,
-      country,
-      year,
-    });
+    const prompt = isSimulationTradeoff
+      ? buildTradeoffPrompt({
+          country: country || 'India',
+          year: year || 2026,
+          currency: currency || '₹',
+          unit: unit || 'Lakh Cr',
+          baselineTotalBudget: baselineTotalBudget || 50.65,
+          deltas: simulationDelta,
+        })
+      : buildExplanationPrompt({
+          category,
+          allocatedAmount,
+          priorYearAmount,
+          growthPercentage,
+          country,
+          year,
+        });
 
     const encoder = new TextEncoder();
 
@@ -110,13 +129,13 @@ export async function POST(req: NextRequest) {
           let responseStreamGen;
           try {
             responseStreamGen = await gemini.models.generateContentStream({
-              model: 'gemini-2.5-flash',
+              model: 'gemini-2.0-flash-lite',
               contents: prompt,
             });
           } catch (modelErr) {
-            console.warn('gemini-2.5-flash fail, falling back to gemini-2.0-flash', modelErr);
+            console.warn('gemini-2.0-flash-lite fail, falling back to gemini-1.5-flash', modelErr);
             responseStreamGen = await gemini.models.generateContentStream({
-              model: 'gemini-2.0-flash',
+              model: 'gemini-1.5-flash',
               contents: prompt,
             });
           }
