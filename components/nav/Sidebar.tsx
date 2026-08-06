@@ -19,6 +19,17 @@ import {
 export const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Auto-collapse sidebar after 3 seconds on initial page load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Remember collapsed preference in localStorage
   useEffect(() => {
@@ -39,12 +50,38 @@ export const Sidebar: React.FC = () => {
   const activeClass = 'bg-[var(--bg-hover)] text-[var(--accent-pulse)] font-semibold border border-[var(--border-color)]';
   const inactiveClass = 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]';
 
+  const shouldShow = isVisible || isHovered;
+
   return (
-    <aside
-      className={`hidden lg:flex flex-col bg-[var(--bg-card)] rounded-[8px] border border-[var(--border-color)] shadow-lg h-[calc(100vh-6rem)] sticky top-20 transition-all duration-300 ${
-        isCollapsed ? 'w-[72px] p-3' : 'w-[260px] p-5'
-      }`}
-    >
+    <>
+      {/* Left Green Accent Handle - Exclusive Trigger when collapsed */}
+      <div
+        className={`fixed left-0 top-1/2 -translate-y-1/2 h-32 w-1 z-50 cursor-pointer transition-all duration-300 rounded-r-md flex items-center justify-center ${
+          shouldShow
+            ? 'opacity-0 pointer-events-none'
+            : 'opacity-100 bg-[var(--accent-pulse)] shadow-[0_0_10px_rgba(127,238,100,0.8)] hover:w-2.5'
+        }`}
+        onMouseEnter={() => setIsVisible(true)}
+        title="Hover left green handle to expand navigation sidebar"
+      >
+        <div className="h-10 w-[2px] bg-black/40 rounded-full" />
+      </div>
+
+      {/* Collapsible Left Sidebar */}
+      <aside
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setIsVisible(false);
+        }}
+        className={`hidden lg:flex flex-col fixed left-4 top-4 z-40 bg-[var(--bg-card)] rounded-[8px] border border-[var(--border-color)] shadow-2xl h-[calc(100vh-2rem)] transition-all duration-300 ease-in-out transform ${
+          isCollapsed ? 'w-[72px] p-3' : 'w-[260px] p-5'
+        } ${
+          shouldShow
+            ? 'translate-x-0 opacity-100 pointer-events-auto'
+            : '-translate-x-[calc(100%+2rem)] opacity-0 pointer-events-none'
+        }`}
+      >
       {/* Header & Collapse Toggle */}
       <div className="flex items-center justify-between mb-6 pb-2 border-b border-[var(--border-subtle)]">
         {!isCollapsed && (
@@ -168,6 +205,7 @@ export const Sidebar: React.FC = () => {
         </div>
       </div>
     </aside>
+  </>
   );
 };
 

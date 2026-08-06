@@ -9,7 +9,7 @@ const memoryUserStore = new Map<string, UserProfile>();
 const DEMO_USER_PROFILE: UserProfile = {
   id: 'demo_user_2026',
   name: 'Demo Budget Analyst',
-  email: 'demo.analyst@txexpliner.org',
+  email: 'demo.analyst@fiscalquant.org',
   country: 'India',
   profession: 'Senior Economic Analyst',
   theme_preference: 'dark',
@@ -79,7 +79,7 @@ export async function getUserProfile(userId: string): Promise<UserProfile> {
   const defaultProfile: UserProfile = {
     id: userId,
     name: 'Budget Explorer',
-    email: `${userId}@txexpliner.org`,
+    email: `${userId}@fiscalquant.org`,
     country: 'India',
     profession: 'Citizen / Researcher',
     theme_preference: 'dark',

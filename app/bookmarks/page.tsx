@@ -60,7 +60,7 @@ export default function BookmarksPage() {
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      <main className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 mt-6 flex gap-8 flex-1">
+      <main className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-2 flex gap-8 flex-1">
         <Sidebar />
 
         <div className="flex-1 space-y-8 min-w-0">

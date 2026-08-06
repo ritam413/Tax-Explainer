@@ -51,7 +51,7 @@ export default function ProfilePage() {
       setProfession(user.profession || 'Senior Economic Analyst');
     } else {
       try {
-        const savedGuest = localStorage.getItem('tx_expliner_guest_profile');
+        const savedGuest = localStorage.getItem('fiscalquant_guest_profile');
         if (savedGuest) {
           const parsed = JSON.parse(savedGuest);
           setName(parsed.name || 'Guest Explorer');
@@ -84,7 +84,7 @@ export default function ProfilePage() {
       } else {
         // Save guest profile in localStorage
         const guestData = { name: name.trim(), country, profession };
-        localStorage.setItem('tx_expliner_guest_profile', JSON.stringify(guestData));
+        localStorage.setItem('fiscalquant_guest_profile', JSON.stringify(guestData));
         setToastType('success');
         setToastMessage('Guest preference saved to local storage!');
       }
@@ -110,7 +110,7 @@ export default function ProfilePage() {
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 pt-2 pb-8">
         <div className="flex gap-8">
           {/* Left Desktop Sidebar */}
           <Sidebar />
@@ -221,7 +221,7 @@ export default function ProfilePage() {
                     </label>
                     <input
                       type="email"
-                      value={isLoggedIn ? user?.email : 'guest@txexpliner.org (Guest Mode)'}
+                      value={isLoggedIn ? user?.email : 'guest@fiscalquant.org (Guest Mode)'}
                       disabled
                       className="w-full px-3 py-2 text-sm bg-[var(--bg-hover)]/50 border border-[var(--border-subtle)] rounded-[8px] text-[var(--text-muted)] cursor-not-allowed"
                     />

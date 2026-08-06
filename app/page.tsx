@@ -1,14 +1,47 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { Navbar } from '@/components/nav/Navbar';
 import { Sidebar } from '@/components/nav/Sidebar';
 import { MobileMenu } from '@/components/nav/MobileMenu';
-import { HeroSnapshotCard } from '@/components/dashboard/HeroSnapshotCard';
-import { OverviewCards } from '@/components/dashboard/OverviewCards';
-import { SectorBreakdownList } from '@/components/dashboard/SectorBreakdownList';
 import { BudgetDataset } from '@/types/budget';
 import { Sparkles, ShieldCheck } from 'lucide-react';
+
+const HeroSnapshotCard = dynamic(
+  () => import('@/components/dashboard/HeroSnapshotCard').then((mod) => mod.HeroSnapshotCard),
+  {
+    loading: () => (
+      <div className="modal-card p-6 min-h-[160px] animate-pulse flex items-center justify-center text-xs text-[var(--text-secondary)]">
+        Loading snapshot telemetry...
+      </div>
+    ),
+  }
+);
+
+const OverviewCards = dynamic(
+  () => import('@/components/dashboard/OverviewCards').then((mod) => mod.OverviewCards),
+  {
+    loading: () => (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-28 modal-card animate-pulse rounded-xl" />
+        ))}
+      </div>
+    ),
+  }
+);
+
+const SectorBreakdownList = dynamic(
+  () => import('@/components/dashboard/SectorBreakdownList').then((mod) => mod.SectorBreakdownList),
+  {
+    loading: () => (
+      <div className="modal-card p-6 min-h-[300px] animate-pulse flex items-center justify-center text-xs text-[var(--text-secondary)]">
+        Loading sector allocation breakdown...
+      </div>
+    ),
+  }
+);
 
 export default function DashboardPage() {
   const [dataset, setDataset] = useState<BudgetDataset | null>(null);
@@ -54,7 +87,7 @@ export default function DashboardPage() {
       />
 
       {/* Main Page Layout Shell (1280px max-width) */}
-      <main className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 mt-6 flex gap-8 flex-1">
+      <main className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-2 flex gap-8 flex-1">
         {/* Left Desktop Sidebar (Hidden on mobile) */}
         <Sidebar />
 

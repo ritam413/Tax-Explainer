@@ -1,16 +1,36 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { DebouncedSearch } from "@/components/budgets/DebouncedSearch";
-import { DisassembleVisualizer } from "@/components/budgets/DisassembleVisualizer";
 import { PieChart, TrendingUp, AlertCircle, Info, ArrowLeft, Sparkles } from "lucide-react";
 import { Navbar } from "@/components/nav/Navbar";
 import { Sidebar } from "@/components/nav/Sidebar";
 import { MobileMenu } from "@/components/nav/MobileMenu";
-
-import { AiResponseCard } from "@/components/ai/AiResponseCard";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
+
+const DisassembleVisualizer = dynamic(
+  () => import("@/components/budgets/DisassembleVisualizer").then((mod) => mod.DisassembleVisualizer),
+  {
+    loading: () => (
+      <div className="flex flex-col items-center justify-center p-8 text-xs text-gray-400 animate-pulse">
+        Loading interactive budget breakdown pie visualizer...
+      </div>
+    ),
+  }
+);
+
+const AiResponseCard = dynamic(
+  () => import("@/components/ai/AiResponseCard").then((mod) => mod.AiResponseCard),
+  {
+    loading: () => (
+      <div className="modal-card p-6 animate-pulse text-xs text-[var(--accent-pulse)] flex items-center justify-center">
+        Initializing AI explanation engine...
+      </div>
+    ),
+  }
+);
 
 interface BudgetCategory {
 
@@ -89,7 +109,7 @@ export default function BudgetsPage() {
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      <main className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 mt-6 flex gap-8 flex-1">
+      <main className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-2 flex gap-8 flex-1">
         <Sidebar />
 
         <div className="flex-1 space-y-8 min-w-0">

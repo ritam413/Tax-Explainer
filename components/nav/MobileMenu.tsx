@@ -36,7 +36,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             <div className="flex items-center gap-2">
               <div className="w-3.5 h-3.5 rounded-[2px] bg-[var(--accent-pulse)]" />
               <span className="font-manrope font-bold text-[18px] text-[var(--text-primary)]">
-                Tx Expliner
+                FiscalQuant
               </span>
             </div>
             <button

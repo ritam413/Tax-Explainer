@@ -57,7 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const demoUser: User = {
       id: 'demo_user_2026',
       name: 'Demo Budget Analyst',
-      email: 'demo.analyst@txexpliner.org',
+      email: 'demo.analyst@fiscalquant.org',
       country: 'India',
       profession: 'Senior Economic Analyst',
       theme_preference: 'dark',

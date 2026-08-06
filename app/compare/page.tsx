@@ -1,15 +1,36 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ArrowLeft, ArrowLeftRight, Sparkles, RefreshCw, AlertCircle, CheckCircle2, ShieldAlert } from 'lucide-react';
 import { Navbar } from '@/components/nav/Navbar';
 import { Sidebar } from '@/components/nav/Sidebar';
 import { MobileMenu } from '@/components/nav/MobileMenu';
-import { CompareVisualizer } from '@/components/budgets/CompareVisualizer';
-import { AiCompareCard } from '@/components/ai/AiCompareCard';
 import { BookmarkButton } from '@/components/bookmarks/BookmarkButton';
 import { ComparisonResponse } from '@/types/budget';
+
+const CompareVisualizer = dynamic(
+  () => import('@/components/budgets/CompareVisualizer').then((mod) => mod.CompareVisualizer),
+  {
+    loading: () => (
+      <div className="modal-card p-8 text-center text-xs text-[var(--text-secondary)] animate-pulse flex items-center justify-center min-h-[300px]">
+        Loading budget comparison visualizer...
+      </div>
+    ),
+  }
+);
+
+const AiCompareCard = dynamic(
+  () => import('@/components/ai/AiCompareCard').then((mod) => mod.AiCompareCard),
+  {
+    loading: () => (
+      <div className="modal-card p-6 text-center text-xs text-[var(--accent-pulse)] animate-pulse flex items-center justify-center">
+        Loading AI difference comparison card...
+      </div>
+    ),
+  }
+);
 
 
 const AVAILABLE_COUNTRIES = ['India', 'United States', 'Japan', 'Russia'];
@@ -91,7 +112,7 @@ export default function ComparePage() {
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      <main className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 mt-6 flex gap-8 flex-1">
+      <main className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-2 flex gap-8 flex-1">
         <Sidebar />
 
         <div className="flex-1 space-y-8 min-w-0">

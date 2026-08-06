@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Tx Expliner | Government Budget Visualizer",
+  title: "FiscalQuant | Government Budget Visualizer",
   description: "Interactive AI-powered government budget explainer and snapshot dashboard.",
 };
 

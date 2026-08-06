@@ -7,13 +7,34 @@ import {
   reallocateZeroSum,
   enforcePrecision,
 } from '@/lib/utils/simulator';
+import dynamic from 'next/dynamic';
 import { SectorSlider } from '@/components/simulator/SectorSlider';
-import { SimulatorChart } from '@/components/simulator/SimulatorChart';
-import { AiTradeoffCard } from '@/components/simulator/AiTradeoffCard';
 import { Navbar } from '@/components/nav/Navbar';
 import { Sidebar } from '@/components/nav/Sidebar';
 import { MobileMenu } from '@/components/nav/MobileMenu';
 import { RefreshCw, RotateCcw, Sliders, Info, Lock } from 'lucide-react';
+
+const SimulatorChart = dynamic(
+  () => import('@/components/simulator/SimulatorChart').then((mod) => mod.SimulatorChart),
+  {
+    loading: () => (
+      <div className="modal-card p-8 min-h-[300px] animate-pulse flex items-center justify-center text-xs text-[var(--text-secondary)]">
+        Loading real-time reallocation chart...
+      </div>
+    ),
+  }
+);
+
+const AiTradeoffCard = dynamic(
+  () => import('@/components/simulator/AiTradeoffCard').then((mod) => mod.AiTradeoffCard),
+  {
+    loading: () => (
+      <div className="modal-card p-6 min-h-[160px] animate-pulse flex items-center justify-center text-xs text-[var(--accent-pulse)]">
+        Initializing fiscal tradeoff explanation card...
+      </div>
+    ),
+  }
+);
 
 export default function SimulatorPage() {
   const [selectedCountry, setSelectedCountry] = useState('India');
@@ -105,7 +126,7 @@ export default function SimulatorPage() {
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      <main className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 mt-6 flex gap-8 flex-1">
+      <main className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 pt-2 flex gap-8 flex-1">
         <Sidebar />
 
         <div className="flex-1 space-y-8 min-w-0">
