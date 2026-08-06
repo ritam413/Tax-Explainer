@@ -17,8 +17,47 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "FiscalQuant | Government Budget Visualizer",
-  description: "Interactive AI-powered government budget explainer and snapshot dashboard.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://tx-expliner.vercel.app"),
+  title: {
+    default: "FiscalQuant | AI-Powered Government Budget Explainer & Simulator",
+    template: "%s | FiscalQuant",
+  },
+  description:
+    "Explore, simulate, and understand government budget allocations with interactive data visualizers and real-time AI explanations.",
+  keywords: [
+    "Government Budget",
+    "Union Budget India",
+    "Fiscal Policy Visualizer",
+    "Budget Simulator",
+    "AI Financial Analysis",
+    "Tax Explainer",
+  ],
+  openGraph: {
+    title: "FiscalQuant | AI-Powered Government Budget Explainer & Simulator",
+    description:
+      "Explore, simulate, and understand government budget allocations with interactive data visualizers and real-time AI explanations.",
+    url: "/",
+    siteName: "FiscalQuant",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FiscalQuant | AI-Powered Government Budget Explainer & Simulator",
+    description:
+      "Explore, simulate, and understand government budget allocations with interactive visualizers and AI explanations.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
