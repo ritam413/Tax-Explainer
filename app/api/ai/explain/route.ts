@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getGeminiClient, buildExplanationPrompt, buildTradeoffPrompt } from '@/lib/gemini/client';
+import { getGroqClient, buildExplanationPrompt, buildTradeoffPrompt } from '@/lib/gemini/client';
 import { checkRateLimit, getAIExplanationCache, setAIExplanationCache } from '@/lib/redis/client';
 
 export const runtime = 'nodejs';
@@ -87,9 +87,9 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 3. Gemini API Integration
-    const gemini = getGeminiClient();
-    if (!gemini) {
+    // 3. Groq AI Integration (Llama 3.3 70B)
+    const groq = getGroqClient();
+    if (!groq) {
       return new Response(
         JSON.stringify({
           error: {
@@ -121,24 +121,16 @@ export async function POST(req: NextRequest) {
 
     const encoder = new TextEncoder();
 
-    // 4. SSE Streaming with AbortSignal stream interruption handling
+    // 4. SSE Streaming with Groq Llama 3.3 70B
     const responseStream = new ReadableStream({
       async start(controller) {
         let fullText = '';
         try {
-          let responseStreamGen;
-          try {
-            responseStreamGen = await gemini.models.generateContentStream({
-              model: 'gemini-2.0-flash-lite',
-              contents: prompt,
-            });
-          } catch (modelErr) {
-            console.warn('gemini-2.0-flash-lite fail, falling back to gemini-1.5-flash', modelErr);
-            responseStreamGen = await gemini.models.generateContentStream({
-              model: 'gemini-1.5-flash',
-              contents: prompt,
-            });
-          }
+          const responseStreamGen = await groq.chat.completions.create({
+            model: 'llama-3.3-70b-versatile',
+            messages: [{ role: 'user', content: prompt }],
+            stream: true,
+          });
 
           for await (const chunk of responseStreamGen) {
             if (req.signal.aborted) {
@@ -147,7 +139,7 @@ export async function POST(req: NextRequest) {
               return;
             }
 
-            const chunkText = chunk.text || '';
+            const chunkText = chunk.choices[0]?.delta?.content || '';
             if (chunkText) {
               fullText += chunkText;
               controller.enqueue(
@@ -163,7 +155,7 @@ export async function POST(req: NextRequest) {
           controller.enqueue(encoder.encode(`data: [DONE]\n\n`));
           controller.close();
         } catch (err: any) {
-          console.error('Gemini SSE streaming error:', err);
+          console.error('Groq SSE streaming error:', err);
           controller.enqueue(
             encoder.encode(
               `data: ${JSON.stringify({ error: 'AI explanation currently unavailable' })}\n\n`

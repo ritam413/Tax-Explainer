@@ -12,6 +12,7 @@ export interface AiResponseCardProps {
   growthPercentage?: number;
   country?: string;
   year?: number;
+  autoFetch?: boolean;
   onOutage?: () => void;
 }
 
@@ -28,10 +29,11 @@ export function AiResponseCard({
   growthPercentage,
   country = "India",
   year = 2025,
+  autoFetch = false,
   onOutage,
 }: AiResponseCardProps) {
   const [explanationText, setExplanationText] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOutage, setIsOutage] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -164,7 +166,16 @@ export function AiResponseCard({
 
 
   useEffect(() => {
-    fetchExplanationStream();
+    if (autoFetch) {
+      fetchExplanationStream();
+    } else {
+      setExplanationText("");
+      setIsLoading(false);
+      setIsOutage(false);
+      setErrorMessage(null);
+      setChatHistory([]);
+      setShowChatInput(false);
+    }
 
     return () => {
       if (abortControllerRef.current) {
@@ -174,7 +185,7 @@ export function AiResponseCard({
         chatAbortControllerRef.current.abort();
       }
     };
-  }, [category, allocatedAmount, priorYearAmount, growthPercentage, country, year, budgetId]);
+  }, [category, allocatedAmount, priorYearAmount, growthPercentage, country, year, budgetId, autoFetch]);
 
   // Handle follow-up chat submit
   const handleFollowUpSubmit = async (e: React.FormEvent) => {
@@ -347,7 +358,20 @@ export function AiResponseCard({
           aria-label={`AI explanation for ${category}`}
           className="text-sm leading-relaxed text-[var(--text-primary)] min-h-[50px]"
         >
-          {isLoading && !explanationText ? (
+          {!isLoading && !explanationText ? (
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-2">
+              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                Click <strong className="text-[var(--text-primary)] font-medium">Explain with AI</strong> to generate a plain-language explanation of this category allocation using Gemini AI.
+              </p>
+              <button
+                onClick={fetchExplanationStream}
+                className="lime-pill-cta flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold shrink-0 cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-[var(--accent-text)]" />
+                <span>Explain with AI</span>
+              </button>
+            </div>
+          ) : isLoading && !explanationText ? (
             <div className="flex items-center gap-2 py-3 text-[var(--text-secondary)]">
               <div className="flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full bg-[var(--accent-pulse)] animate-ping" />

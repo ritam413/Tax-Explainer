@@ -1,4 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
+import Groq from 'groq-sdk';
 
 const apiKey = process.env.GEMINI_API_KEY || '';
 
@@ -15,6 +16,14 @@ export function getGeminiClient(): GoogleGenAI | null {
     return null;
   }
   return ai;
+}
+
+export function getGroqClient(): Groq | null {
+  const currentKey = process.env.GROQ_API_KEY || '';
+  if (currentKey && !currentKey.includes('placeholder')) {
+    return new Groq({ apiKey: currentKey, dangerouslyAllowBrowser: true });
+  }
+  return null;
 }
 
 export interface BudgetPromptContext {

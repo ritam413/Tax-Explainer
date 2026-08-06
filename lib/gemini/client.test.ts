@@ -5,6 +5,7 @@ import {
   buildChatPrompt,
   buildTradeoffPrompt,
   getGeminiClient,
+  getGroqClient,
 } from './client';
 import type { BudgetPromptContext, ChatMessage } from './client';
 
@@ -276,12 +277,6 @@ describe('buildTradeoffPrompt', () => {
 describe('getGeminiClient', () => {
   it('returns null when GEMINI_API_KEY is not set', () => {
     vi.stubEnv('GEMINI_API_KEY', '');
-    // The module's `ai` singleton is already null in test env (no real key)
-    // Test that getGeminiClient() returns null
-    const client = getGeminiClient();
-    // In a test environment without a real key the client should be null
-    // (we can't instantiate a real GoogleGenAI without a network connection)
-    // We simply verify it doesn't throw
     expect(() => getGeminiClient()).not.toThrow();
     vi.unstubAllEnvs();
   });
@@ -289,8 +284,32 @@ describe('getGeminiClient', () => {
   it('returns null when API key contains "placeholder"', () => {
     vi.stubEnv('GEMINI_API_KEY', 'placeholder_key_value');
     const client = getGeminiClient();
-    // placeholder keys must never produce a real client
     expect(client).toBeNull();
+    vi.unstubAllEnvs();
+  });
+});
+
+// ─── getGroqClient ────────────────────────────────────────────────────────────
+
+describe('getGroqClient', () => {
+  it('returns null when GROQ_API_KEY is not set', () => {
+    vi.stubEnv('GROQ_API_KEY', '');
+    const client = getGroqClient();
+    expect(client).toBeNull();
+    vi.unstubAllEnvs();
+  });
+
+  it('returns null when GROQ_API_KEY contains "placeholder"', () => {
+    vi.stubEnv('GROQ_API_KEY', 'placeholder_key_value');
+    const client = getGroqClient();
+    expect(client).toBeNull();
+    vi.unstubAllEnvs();
+  });
+
+  it('instantiates Groq client when a valid GROQ_API_KEY is provided', () => {
+    vi.stubEnv('GROQ_API_KEY', 'gsk_test_mock_key_123456');
+    const client = getGroqClient();
+    expect(client).not.toBeNull();
     vi.unstubAllEnvs();
   });
 });

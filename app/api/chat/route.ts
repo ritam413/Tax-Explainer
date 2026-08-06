@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getGeminiClient, buildChatPrompt, ChatMessage } from '@/lib/gemini/client';
+import { getGroqClient, buildChatPrompt, ChatMessage } from '@/lib/gemini/client';
 import { checkRateLimit } from '@/lib/redis/client';
 
 export const runtime = 'nodejs';
@@ -70,8 +70,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const gemini = getGeminiClient();
-    if (!gemini) {
+    const groq = getGroqClient();
+    if (!groq) {
       return new Response(
         JSON.stringify({
           error: {
@@ -94,19 +94,11 @@ export async function POST(req: NextRequest) {
     const responseStream = new ReadableStream({
       async start(controller) {
         try {
-          let responseStreamGen;
-          try {
-            responseStreamGen = await gemini.models.generateContentStream({
-              model: 'gemini-2.5-flash',
-              contents: prompt,
-            });
-          } catch (modelErr) {
-            console.warn('gemini-2.5-flash fail in chat, falling back to gemini-1.5-flash', modelErr);
-            responseStreamGen = await gemini.models.generateContentStream({
-              model: 'gemini-1.5-flash',
-              contents: prompt,
-            });
-          }
+          const responseStreamGen = await groq.chat.completions.create({
+            model: 'llama-3.3-70b-versatile',
+            messages: [{ role: 'user', content: prompt }],
+            stream: true,
+          });
 
           for await (const chunk of responseStreamGen) {
             if (req.signal.aborted) {
@@ -114,7 +106,7 @@ export async function POST(req: NextRequest) {
               return;
             }
 
-            const chunkText = chunk.text || '';
+            const chunkText = chunk.choices[0]?.delta?.content || '';
             if (chunkText) {
               controller.enqueue(
                 encoder.encode(`data: ${JSON.stringify({ text: chunkText })}\n\n`)
@@ -125,7 +117,7 @@ export async function POST(req: NextRequest) {
           controller.enqueue(encoder.encode(`data: [DONE]\n\n`));
           controller.close();
         } catch (err: any) {
-          console.error('Gemini Chat SSE streaming error:', err);
+          console.error('Groq Chat SSE streaming error:', err);
           controller.enqueue(
             encoder.encode(
               `data: ${JSON.stringify({ error: 'AI explanation currently unavailable' })}\n\n`

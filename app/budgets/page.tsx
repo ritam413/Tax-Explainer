@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { DebouncedSearch } from "@/components/budgets/DebouncedSearch";
 import { DisassembleVisualizer } from "@/components/budgets/DisassembleVisualizer";
-import { PieChart, TrendingUp, AlertCircle, Info, ArrowLeft } from "lucide-react";
+import { PieChart, TrendingUp, AlertCircle, Info, ArrowLeft, Sparkles } from "lucide-react";
 import { Navbar } from "@/components/nav/Navbar";
 import { Sidebar } from "@/components/nav/Sidebar";
 import { MobileMenu } from "@/components/nav/MobileMenu";
@@ -196,6 +196,16 @@ export default function BudgetsPage() {
                         <span>Research & Development ({Math.round(activeCategory.value * 0.25)}B)</span>
                       </li>
                     </ul>
+
+                    {explainedCategoryId !== activeCategory.id && (
+                      <button
+                        onClick={handleExplainClick}
+                        className="lime-pill-cta flex items-center justify-center gap-2 w-full py-2.5 text-xs font-semibold cursor-pointer shadow-md mt-4"
+                      >
+                        <Sparkles className="w-4 h-4 text-[var(--accent-text)]" />
+                        <span>Explain with AI</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -210,6 +220,7 @@ export default function BudgetsPage() {
                   growthPercentage={11.1}
                   country="India"
                   year={2025}
+                  autoFetch={true}
                 />
               )}
             </div>

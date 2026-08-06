@@ -22,7 +22,7 @@ export const AiCompareCard: React.FC<AiCompareCardProps> = ({
   isIdentical,
 }) => {
   const [explanation, setExplanation] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isRateLimited, setIsRateLimited] = useState<boolean>(false);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -151,7 +151,10 @@ export const AiCompareCard: React.FC<AiCompareCardProps> = ({
   };
 
   useEffect(() => {
-    fetchAIExplanation();
+    setExplanation('');
+    setIsLoading(false);
+    setError(null);
+    setIsRateLimited(false);
     return () => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
@@ -183,7 +186,7 @@ export const AiCompareCard: React.FC<AiCompareCardProps> = ({
           </div>
         </div>
 
-        {!isLoading && (
+        {!isLoading && explanation && (
           <button
             onClick={fetchAIExplanation}
             className="text-xs text-[var(--text-secondary)] hover:text-[var(--accent-pulse)] flex items-center gap-1 transition-colors px-2 py-1 rounded bg-[var(--bg-hover)] cursor-pointer"
@@ -193,6 +196,22 @@ export const AiCompareCard: React.FC<AiCompareCardProps> = ({
           </button>
         )}
       </div>
+
+      {/* Unfetched / Initial State */}
+      {!isLoading && !explanation && !isRateLimited && (
+        <div className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+            Click <strong className="text-[var(--text-primary)] font-medium">Explain with AI</strong> to generate a plain-language citizen summary explaining major shifts between these datasets.
+          </p>
+          <button
+            onClick={fetchAIExplanation}
+            className="lime-pill-cta flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold shrink-0 cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[var(--accent-text)]" />
+            <span>Explain with AI</span>
+          </button>
+        </div>
+      )}
 
       {/* Loading State */}
       {isLoading && (
