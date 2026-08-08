@@ -3,6 +3,7 @@
   "country": "Japan",
   "year": 2025,
   "currency": "¥",
+  "unit": "Trillion",
   "totalBudget": 114.0,
   "sectors": [
     {

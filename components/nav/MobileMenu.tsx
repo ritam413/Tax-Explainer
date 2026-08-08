@@ -34,7 +34,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           {/* Header */}
           <div className="flex items-center justify-between pb-6 border-b border-[var(--border-subtle)] mb-6">
             <div className="flex items-center gap-2">
-              <div className="w-3.5 h-3.5 rounded-[2px] bg-[var(--accent-pulse)]" />
+              <img
+                src="/fvicon.avif"
+                alt="FiscalQuant Logo"
+                className="w-6 h-6 rounded-md object-contain"
+              />
               <span className="font-manrope font-bold text-[18px] text-[var(--text-primary)]">
                 FiscalQuant
               </span>

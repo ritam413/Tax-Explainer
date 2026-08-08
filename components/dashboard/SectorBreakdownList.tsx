@@ -164,7 +164,7 @@ export const SectorBreakdownList: React.FC<SectorBreakdownListProps> = ({ datase
                   {/* Right Amount & YoY */}
                   <div className="flex items-center gap-3">
                     <span className="font-manrope font-bold text-[18px] text-[var(--text-primary)]">
-                      {currency}{amount.toFixed(2)} Lakh Cr
+                      {currency}{amount.toFixed(2)} {dataset?.unit || 'Lakh Cr'}
                     </span>
 
                     <span

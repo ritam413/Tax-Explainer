@@ -3,6 +3,7 @@
   "country": "United States",
   "year": 2025,
   "currency": "$",
+  "unit": "Billion",
   "totalBudget": 6900.0,
   "sectors": [
     {

@@ -13,11 +13,7 @@ const COUNTRIES = [
   'India',
   'United States',
   'Japan',
-  'United Kingdom',
-  'Germany',
-  'France',
-  'Canada',
-  'Global / Other',
+  'Russia',
 ];
 
 const PROFESSIONS = [

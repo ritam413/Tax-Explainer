@@ -294,7 +294,7 @@ export default function BookmarksPage() {
                         {bm.metadata?.totalDelta !== undefined && (
                           <span className="px-2 py-1 bg-[var(--badge-bg)] border border-[var(--badge-border)] rounded-md text-xs font-mono text-[var(--accent-pulse)]">
                             Delta: {bm.metadata.totalDelta >= 0 ? '+' : ''}
-                            {bm.metadata.totalDelta.toFixed(2)} Lakh Cr
+                            {bm.metadata.totalDelta.toFixed(2)} {bm.metadata.unit || 'Lakh Cr'}
                           </span>
                         )}
                       </div>

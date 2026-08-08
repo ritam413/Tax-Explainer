@@ -3,6 +3,7 @@
   "country": "Japan",
   "year": 2024,
   "currency": "¥",
+  "unit": "Trillion",
   "totalBudget": 112.57,
   "sectors": [
     {

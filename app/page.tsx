@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { Navbar } from '@/components/nav/Navbar';
 import { Sidebar } from '@/components/nav/Sidebar';
 import { MobileMenu } from '@/components/nav/MobileMenu';
+import { useAuth } from '@/components/providers/AuthProvider';
 import { BudgetDataset } from '@/types/budget';
 import { Sparkles, ShieldCheck } from 'lucide-react';
 
@@ -44,17 +45,43 @@ const SectorBreakdownList = dynamic(
 );
 
 export default function DashboardPage() {
+  const { user, isLoggedIn } = useAuth();
   const [dataset, setDataset] = useState<BudgetDataset | null>(null);
   const [cached, setCached] = useState<boolean>(false);
   const [loadTimeMs, setLoadTimeMs] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
-  const fetchDashboardData = async () => {
+  const getTargetCountryAndYear = () => {
+    let country = 'India';
+    let year = 2026;
+
+    if (isLoggedIn && user?.country) {
+      country = user.country;
+    } else {
+      try {
+        const savedGuest = localStorage.getItem('fiscalquant_guest_profile');
+        if (savedGuest) {
+          const parsed = JSON.parse(savedGuest);
+          if (parsed.country) {
+            country = parsed.country;
+          }
+        }
+      } catch {}
+    }
+
+    return { country, year };
+  };
+
+  const fetchDashboardData = async (customCountry?: string, customYear?: number) => {
     setLoading(true);
     const start = performance.now();
+    const target = getTargetCountryAndYear();
+    const country = customCountry || target.country;
+    const year = customYear || target.year;
+
     try {
-      const res = await fetch('/api/dashboard?country=India&year=2026');
+      const res = await fetch(`/api/dashboard?country=${encodeURIComponent(country)}&year=${year}`);
       const data = await res.json();
       const duration = Math.round(performance.now() - start);
 
@@ -72,7 +99,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [user?.country, isLoggedIn]);
 
   return (
     <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] flex flex-col font-inter-variable antialiased pb-16 transition-colors duration-200">
@@ -101,7 +128,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <span className="text-[13px] font-semibold text-[var(--text-primary)]">
-                  Phase 1 Baseline: Union Budget 2026 Snapshot Active
+                  {dataset?.country || 'India'} Budget {dataset?.year || 2026} Snapshot Active
                 </span>
                 <p className="text-[12px] text-[var(--text-secondary)]">
                   Rendered under 2s target limit with Redis caching layer enabled.

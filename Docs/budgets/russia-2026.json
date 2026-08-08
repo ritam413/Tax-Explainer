@@ -3,6 +3,7 @@
   "country": "Russia",
   "year": 2026,
   "currency": "₽",
+  "unit": "Trillion",
   "totalBudget": 40.3,
   "sectors": [
     {

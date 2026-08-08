@@ -10,6 +10,7 @@ interface OverviewCardsProps {
 
 export const OverviewCards: React.FC<OverviewCardsProps> = ({ dataset }) => {
   const currency = dataset?.currency || '₹';
+  const unit = dataset?.unit || 'Lakh Cr';
   const total = dataset?.totalBudget || 50.65;
   const sectors = dataset?.sectors || [];
   
@@ -38,7 +39,7 @@ export const OverviewCards: React.FC<OverviewCardsProps> = ({ dataset }) => {
           </div>
         </div>
         <div className="font-manrope font-semibold text-[24px] text-[var(--text-primary)]">
-          {currency}{total.toFixed(2)} Lakh Cr
+          {currency}{total.toFixed(2)} {unit}
         </div>
         <p className="text-[12px] text-[var(--text-muted)] mt-1">100% of fiscal budget</p>
       </div>
@@ -57,7 +58,7 @@ export const OverviewCards: React.FC<OverviewCardsProps> = ({ dataset }) => {
           {topSector ? topSector.category.split('&')[0] : 'Interest Payments'}
         </div>
         <p className="text-[12px] text-[var(--accent-pulse)] font-semibold mt-1">
-          {topSector ? `${currency}${topSector.allocatedAmount} Cr (${topSector.percentageOfTotal.toFixed(1)}%)` : '23.5% of total'}
+          {topSector ? `${currency}${topSector.allocatedAmount} ${unit} (${topSector.percentageOfTotal.toFixed(1)}%)` : '23.5% of total'}
         </p>
       </div>
 

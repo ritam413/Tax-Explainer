@@ -3,6 +3,7 @@
   "country": "United States",
   "year": 2024,
   "currency": "$",
+  "unit": "Billion",
   "totalBudget": 6752.0,
   "sectors": [
     {

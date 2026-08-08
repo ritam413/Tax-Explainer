@@ -71,11 +71,10 @@ export interface RateLimitResult {
 }
 
 /**
- * Enforce rate limiting: 20 req/hr for logged-in users, 5 req/hr for guests (50 req/hr in dev for testing)
+ * Enforce rate limiting for AI endpoints: strict limit of 5 requests per hour per client/user.
  */
 export async function checkRateLimit(identifier: string, isGuest: boolean): Promise<RateLimitResult> {
-  const isDev = process.env.NODE_ENV === 'development';
-  const limit = isDev ? 50 : (isGuest ? 5 : 20);
+  const limit = 5; // Strict 5 requests per hour limit for any single AI endpoint
   const hourWindow = Math.floor(Date.now() / (1000 * 60 * 60));
   const key = `ratelimit:ai:${identifier}:${hourWindow}`;
 
@@ -102,6 +101,50 @@ export async function checkRateLimit(identifier: string, isGuest: boolean): Prom
 
   if (!entry || entry.expiresAt < now) {
     memoryRateLimitMap.set(key, { count: 1, expiresAt: now + 3600 * 1000 });
+    return { allowed: true, remaining: limit - 1, limit };
+  }
+
+  entry.count += 1;
+  const allowed = entry.count <= limit;
+  return {
+    allowed,
+    remaining: Math.max(0, limit - entry.count),
+    limit,
+  };
+}
+
+/**
+ * Enforce rate limiting for Auth routes (login / sign up): 5 retries per 15 minutes window.
+ */
+export async function checkAuthRateLimit(identifier: string): Promise<RateLimitResult> {
+  const limit = 5;
+  const windowMs = 15 * 60 * 1000; // 15 minutes
+  const windowBucket = Math.floor(Date.now() / windowMs);
+  const key = `ratelimit:auth:${identifier}:${windowBucket}`;
+
+  if (redis) {
+    try {
+      const current = await redis.incr(key);
+      if (current === 1) {
+        await redis.expire(key, 900); // 15 minutes in seconds
+      }
+      const allowed = current <= limit;
+      return {
+        allowed,
+        remaining: Math.max(0, limit - current),
+        limit,
+      };
+    } catch (error) {
+      console.warn('Redis auth rate limit error, falling back to memory:', error);
+    }
+  }
+
+  // In-memory fallback
+  const now = Date.now();
+  const entry = memoryRateLimitMap.get(key);
+
+  if (!entry || entry.expiresAt < now) {
+    memoryRateLimitMap.set(key, { count: 1, expiresAt: now + windowMs });
     return { allowed: true, remaining: limit - 1, limit };
   }
 

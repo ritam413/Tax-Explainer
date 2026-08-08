@@ -14,6 +14,8 @@ interface DataItem {
 interface DisassembleVisualizerProps {
   data: DataItem[];
   activeId: string | null;
+  currency?: string;
+  unit?: string;
   onSliceClick: (id: string) => void;
   onExplainClick?: () => void;
 }
@@ -33,6 +35,9 @@ const renderActiveShape = (props: any) => {
     percent,
     value,
   } = props;
+
+  const currency = payload.currency || props.currency || '₹';
+  const unit = payload.unit || props.unit || 'Lakh Cr';
 
   // Calculate shift distance along angle bisector
   const shiftDistance = 22;
@@ -87,7 +92,7 @@ const renderActiveShape = (props: any) => {
         fill="var(--text-primary)"
         className="text-xs font-mono font-medium"
       >
-        ${value}B ({percentageStr}%)
+        {currency}{value} {unit} ({percentageStr}%)
       </text>
 
       {/* Main Sector Slice */}
@@ -118,7 +123,7 @@ const renderActiveShape = (props: any) => {
 
 const PieAny = Pie as any;
 
-export function DisassembleVisualizer({ data, activeId, onSliceClick, onExplainClick }: DisassembleVisualizerProps) {
+export function DisassembleVisualizer({ data, activeId, currency = '₹', unit = 'Lakh Cr', onSliceClick, onExplainClick }: DisassembleVisualizerProps) {
   // We need a local state to track active index because recharts uses index for activeShape
   const [activeIndex, setActiveIndex] = useState<number | undefined>(undefined);
 
@@ -147,6 +152,11 @@ export function DisassembleVisualizer({ data, activeId, onSliceClick, onExplainC
 
   if (data.length === 0) return null;
 
+  const formattedData = React.useMemo(
+    () => data.map((item) => ({ ...item, currency, unit })),
+    [data, currency, unit]
+  );
+
   return (
     <div className="w-full h-full min-h-[400px] flex items-center justify-center relative">
       <ResponsiveContainer width="100%" height={400}>
@@ -154,7 +164,7 @@ export function DisassembleVisualizer({ data, activeId, onSliceClick, onExplainC
           <PieAny
             activeIndex={activeIndex}
             activeShape={renderActiveShape}
-            data={data}
+            data={formattedData}
             cx="50%"
             cy="50%"
             innerRadius={80}

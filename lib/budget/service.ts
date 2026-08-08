@@ -102,13 +102,24 @@ export const DEFAULT_INDIA_2026_BUDGET: BudgetDataset = {
 export function sanitizeBudgetDataset(dataset: BudgetDataset): BudgetDataset {
   const safeTotal = dataset.totalBudget > 0 ? dataset.totalBudget : 0;
   const countryLower = (dataset.country || 'India').toLowerCase();
+
+  const defaultCurrency = countryLower.includes('india') || countryLower === 'ind'
+    ? '₹'
+    : countryLower.includes('united') || countryLower.includes('us')
+    ? '$'
+    : countryLower.includes('japan') || countryLower === 'jpn'
+    ? '¥'
+    : countryLower.includes('russia') || countryLower === 'rus'
+    ? '₽'
+    : '₹';
   
-  const defaultUnit = countryLower.includes('india')
+  const defaultUnit = countryLower.includes('india') || countryLower === 'ind'
     ? 'Lakh Cr'
     : countryLower.includes('united') || countryLower.includes('us')
     ? 'Billion'
     : 'Trillion';
 
+  const currency = dataset.currency || defaultCurrency;
   const unit = dataset.unit || defaultUnit;
 
   const sanitizedSectors = (dataset.sectors || []).map((sec, index) => {
@@ -139,6 +150,7 @@ export function sanitizeBudgetDataset(dataset: BudgetDataset): BudgetDataset {
 
   return {
     ...dataset,
+    currency,
     unit,
     totalBudget: Number(safeTotal.toFixed(2)),
     sectors: sanitizedSectors

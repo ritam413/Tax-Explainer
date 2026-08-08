@@ -33,6 +33,8 @@ export interface BudgetPromptContext {
   growthPercentage?: number;
   country?: string;
   year?: number;
+  currency?: string;
+  unit?: string;
 }
 
 export interface ChatMessage {
@@ -41,15 +43,30 @@ export interface ChatMessage {
 }
 
 export function buildExplanationPrompt(context: BudgetPromptContext): string {
+  const country = context.country || 'India';
+  const year = context.year || 2026;
+  const countryLower = country.toLowerCase();
+  
+  const currency = context.currency || (
+    countryLower.includes('united') || countryLower.includes('us') ? '$' :
+    countryLower.includes('japan') ? '¥' :
+    countryLower.includes('russia') ? '₽' : '₹'
+  );
+  
+  const unit = context.unit || (
+    countryLower.includes('united') || countryLower.includes('us') ? 'Billion' :
+    countryLower.includes('japan') || countryLower.includes('russia') ? 'Trillion' : 'Lakh Cr'
+  );
+
   return `[SYSTEM INSTRUCTION: STRICT GROUNDING REQUIREMENT]
 You are a public finance expert explaining government budget allocations to everyday citizens in clear, plain language.
 CRITICAL CONSTRAINT: You MUST ground your explanation strictly in the numeric data provided below. Do NOT invent, hallucinate, or assume any unverified figures, statistics, or metrics.
 
 BUDGET DATA CONTEXT:
-- Country / Fiscal Year: ${context.country || 'India'} (${context.year || 2025})
+- Country / Fiscal Year: ${country} (${year})
 - Sector / Category: ${context.category}
-- Allocated Amount: ₹${context.allocatedAmount} Billion
-${context.priorYearAmount !== undefined ? `- Prior Year Amount: ₹${context.priorYearAmount} Billion` : ''}
+- Allocated Amount: ${currency}${context.allocatedAmount} ${unit}
+${context.priorYearAmount !== undefined ? `- Prior Year Amount: ${currency}${context.priorYearAmount} ${unit}` : ''}
 ${context.growthPercentage !== undefined ? `- Growth / Delta: ${context.growthPercentage}%` : ''}
 
 EXPLANATION FORMAT RULES:
@@ -105,11 +122,27 @@ EXPLANATION FORMAT RULES:
 3. Mention any new or discontinued categories if present in the data.
 4. Keep the tone objective, analytical, and accessible without academic jargon.`;
 }
+
 export function buildChatPrompt(
   context: BudgetPromptContext,
   history: ChatMessage[],
   followUpMessage: string
 ): string {
+  const country = context.country || 'India';
+  const year = context.year || 2026;
+  const countryLower = country.toLowerCase();
+  
+  const currency = context.currency || (
+    countryLower.includes('united') || countryLower.includes('us') ? '$' :
+    countryLower.includes('japan') ? '¥' :
+    countryLower.includes('russia') ? '₽' : '₹'
+  );
+  
+  const unit = context.unit || (
+    countryLower.includes('united') || countryLower.includes('us') ? 'Billion' :
+    countryLower.includes('japan') || countryLower.includes('russia') ? 'Trillion' : 'Lakh Cr'
+  );
+
   const formattedHistory = history
     .map((msg) => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.text}`)
     .join('\n');
@@ -119,9 +152,9 @@ You are an AI Budget Assistant answering a citizen's follow-up question regardin
 CRITICAL CONSTRAINT: Stay strictly focused on the context of this specific budget item. Use only provided facts and numeric figures. Do NOT speculate or provide advice on unrelated political/financial topics.
 
 BUDGET CONTEXT:
-- Sector: ${context.category} (${context.country || 'India'} ${context.year || 2025})
-- Allocated Amount: ₹${context.allocatedAmount} Billion
-${context.priorYearAmount !== undefined ? `- Prior Year: ₹${context.priorYearAmount} Billion` : ''}
+- Sector: ${context.category} (${country} ${year})
+- Allocated Amount: ${currency}${context.allocatedAmount} ${unit}
+${context.priorYearAmount !== undefined ? `- Prior Year: ${currency}${context.priorYearAmount} ${unit}` : ''}
 ${context.growthPercentage !== undefined ? `- Growth: ${context.growthPercentage}%` : ''}
 
 CONVERSATION HISTORY:
@@ -147,29 +180,55 @@ export function buildTradeoffPrompt(data: {
     deltaPercentage: number;
   }>;
 }): string {
-  const deltaLines = data.deltas
-    .map((d) => {
-      const name = d.category || d.sectorId;
-      const base = d.baselineAmount !== undefined ? `${data.currency}${d.baselineAmount}` : 'baseline';
-      const net = `${data.currency}${d.newAmount}`;
-      const change = `${d.deltaPercentage > 0 ? '+' : ''}${d.deltaPercentage}%`;
-      return `- ${name}: ${base} → ${net} (${change})`;
-    })
-    .join('\n');
-
-  return `[SYSTEM INSTRUCTION: STRICT GROUNDING REQUIREMENT]
+  if (!data.deltas || data.deltas.length === 0) {
+    return `[SYSTEM INSTRUCTION: STRICT GROUNDING REQUIREMENT]
 You are a public finance AI advisor evaluating a citizen's hypothetical budget reallocation simulation.
-CRITICAL CONSTRAINT: Ground your analysis strictly in the numeric budget deltas listed below. Do NOT hallucinate figures or assume unverified statistics.
+CRITICAL CONSTRAINT: Ground your analysis strictly in the structured budget deltas listed below. Do NOT hallucinate figures or assume unverified statistics.
 
-HYPOTHETICAL BUDGET SIMULATION CONTEXT:
+HYPOTHETICAL BUDGET REALLOCATION CONTEXT:
 - Country & Fiscal Year: ${data.country} ${data.year}
-- Total Budget Baseline: ${data.currency}${data.baselineTotalBudget} ${data.unit}
-- Modified Sectors (Zero-Sum Reallocation):
-${deltaLines || '- No sector changes detected'}
+- Total Budget Baseline: ${data.currency}${data.baselineTotalBudget} ${data.unit} (Zero-Sum Balance Maintained)
+- No sector changes detected
 
 EXPLANATION FORMAT RULES:
 1. Provide a clear 3-4 sentence trade-off analysis explaining the policy consequences of these sector budget shifts.
-2. Explain which sectors benefit and which public services will face cuts or extra funding.
+2. Explain which public services benefit from the extra funding and which face cuts.
 3. Assess the socio-economic impacts of this budget shift in plain, clear citizen-friendly language.
-4. Conclude with a neutral statement on public policy balance.`;
+4. Conclude with a neutral statement on overall fiscal policy balance.`;
+  }
+
+  const formatDeltaLine = (d: any) => {
+    const name = d.category || d.sectorId;
+    const base = d.baselineAmount !== undefined ? `${data.currency}${d.baselineAmount} ${data.unit}` : 'baseline';
+    const net = `${data.currency}${d.newAmount} ${data.unit}`;
+    const change = `${d.deltaPercentage > 0 ? '+' : ''}${d.deltaPercentage}%`;
+    return `- ${name}: ${base} → ${net} (${change})`;
+  };
+
+  const increases = data.deltas.filter((d) => d.deltaPercentage > 0);
+  const cuts = data.deltas.filter((d) => d.deltaPercentage < 0);
+
+  const increaseLines = increases.length > 0 ? increases.map(formatDeltaLine).join('\n') : '- No sector increases';
+  const cutLines = cuts.length > 0 ? cuts.map(formatDeltaLine).join('\n') : '- No sector cuts';
+
+  return `[SYSTEM INSTRUCTION: STRICT GROUNDING REQUIREMENT]
+You are a public finance AI advisor evaluating a citizen's hypothetical budget reallocation simulation.
+CRITICAL CONSTRAINT: Ground your analysis strictly in the structured budget deltas listed below. Do NOT hallucinate figures or assume unverified statistics.
+
+HYPOTHETICAL BUDGET REALLOCATION CONTEXT:
+- Country & Fiscal Year: ${data.country} ${data.year}
+- Total Budget Baseline: ${data.currency}${data.baselineTotalBudget} ${data.unit} (Zero-Sum Balance Maintained)
+
+FUNDING INCREASES (+):
+${increaseLines}
+
+FUNDING CUTS (-):
+${cutLines}
+
+EXPLANATION FORMAT RULES:
+1. Provide a clear 3-4 sentence trade-off analysis explaining the policy consequences of these sector budget shifts.
+2. Explain which public services benefit from the extra funding and which face cuts.
+3. Assess the socio-economic impacts of this budget shift in plain, clear citizen-friendly language.
+4. Conclude with a neutral statement on overall fiscal policy balance.`;
 }
+

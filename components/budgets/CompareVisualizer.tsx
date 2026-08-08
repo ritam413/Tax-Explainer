@@ -23,8 +23,8 @@ export const CompareVisualizer: React.FC<CompareVisualizerProps> = ({
     ...sectorDeltas.map((s) => Math.max(s.amountA, s.amountB))
   );
 
-  const unitA = datasetA.unit || (datasetA.country.toLowerCase().includes('india') ? 'Lakh Cr' : 'Billion');
-  const unitB = datasetB.unit || (datasetB.country.toLowerCase().includes('india') ? 'Lakh Cr' : 'Billion');
+  const unitA = datasetA.unit || (datasetA.country.toLowerCase().includes('india') ? 'Lakh Cr' : datasetA.country.toLowerCase().includes('japan') || datasetA.country.toLowerCase().includes('russia') ? 'Trillion' : 'Billion');
+  const unitB = datasetB.unit || (datasetB.country.toLowerCase().includes('india') ? 'Lakh Cr' : datasetB.country.toLowerCase().includes('japan') || datasetB.country.toLowerCase().includes('russia') ? 'Trillion' : 'Billion');
   const isDifferentCurrency = datasetA.currency !== datasetB.currency || unitA !== unitB;
 
   return (

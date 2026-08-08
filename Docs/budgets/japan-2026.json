@@ -3,6 +3,7 @@
   "country": "Japan",
   "year": 2026,
   "currency": "¥",
+  "unit": "Trillion",
   "totalBudget": 115.4,
   "sectors": [
     {

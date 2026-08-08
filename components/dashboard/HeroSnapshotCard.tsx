@@ -19,7 +19,8 @@ export const HeroSnapshotCard: React.FC<HeroSnapshotCardProps> = ({
   loading,
   onRefreshCache,
 }) => {
-  const totalDisplay = dataset ? `${dataset.currency}${dataset.totalBudget.toFixed(2)} Lakh Cr` : '₹50.65 Lakh Cr';
+  const unit = dataset?.unit || 'Lakh Cr';
+  const totalDisplay = dataset ? `${dataset.currency}${dataset.totalBudget.toFixed(2)} ${unit}` : `₹50.65 ${unit}`;
   const country = dataset?.country || 'India';
   const year = dataset?.year || 2026;
 

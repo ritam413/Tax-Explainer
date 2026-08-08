@@ -3,6 +3,7 @@
   "country": "United States",
   "year": 2026,
   "currency": "$",
+  "unit": "Billion",
   "totalBudget": 7100.0,
   "sectors": [
     {

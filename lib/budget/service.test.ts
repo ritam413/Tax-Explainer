@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { z } from 'zod';
-import { sanitizeBudgetDataset, compareBudgets, DEFAULT_INDIA_2026_BUDGET } from './service';
+import { sanitizeBudgetDataset, compareBudgets, fetchBudgetDataset, DEFAULT_INDIA_2026_BUDGET } from './service';
 import type { BudgetDataset } from '@/types/budget';
 
 // ─── Zod Runtime Schemas (test-only validation layer) ─────────────────────────
@@ -419,3 +419,41 @@ describe('compareBudgets — default India 2026 dataset schema', () => {
     expect(result.totalDelta).toBe(0);
   });
 });
+
+describe('fetchBudgetDataset — dynamic country dataset fetching', () => {
+  it('fetches India 2026 dataset correctly', async () => {
+    const dataset = await fetchBudgetDataset('India', 2026);
+    expect(dataset.country).toBe('India');
+    expect(dataset.year).toBe(2026);
+    expect(dataset.sectors.length).toBeGreaterThan(0);
+    const parsed = BudgetDatasetSchema.safeParse(dataset);
+    expect(parsed.success).toBe(true);
+  });
+
+  it('fetches Russia 2026 dataset correctly', async () => {
+    const dataset = await fetchBudgetDataset('Russia', 2026);
+    expect(dataset.country).toBe('Russia');
+    expect(dataset.year).toBe(2026);
+    expect(dataset.sectors.length).toBeGreaterThan(0);
+    const parsed = BudgetDatasetSchema.safeParse(dataset);
+    expect(parsed.success).toBe(true);
+  });
+
+  it('fetches Japan 2026 dataset correctly', async () => {
+    const dataset = await fetchBudgetDataset('Japan', 2026);
+    expect(dataset.country).toBe('Japan');
+    expect(dataset.year).toBe(2026);
+    expect(dataset.sectors.length).toBeGreaterThan(0);
+    const parsed = BudgetDatasetSchema.safeParse(dataset);
+    expect(parsed.success).toBe(true);
+  });
+
+  it('falls back to India 2026 for unrecognised country profile', async () => {
+    const dataset = await fetchBudgetDataset('UnknownCountry', 2026);
+    expect(dataset.year).toBe(2026);
+    expect(dataset.sectors.length).toBeGreaterThan(0);
+    const parsed = BudgetDatasetSchema.safeParse(dataset);
+    expect(parsed.success).toBe(true);
+  });
+});
+

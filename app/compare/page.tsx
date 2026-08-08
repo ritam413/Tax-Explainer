@@ -33,10 +33,13 @@ const AiCompareCard = dynamic(
 );
 
 
+import { useAuth } from '@/components/providers/AuthProvider';
+
 const AVAILABLE_COUNTRIES = ['India', 'United States', 'Japan', 'Russia'];
 const AVAILABLE_YEARS = [2026, 2025, 2024];
 
 export default function ComparePage() {
+  const { user, isLoggedIn } = useAuth();
   const [countryA, setCountryA] = useState<string>('India');
   const [yearA, setYearA] = useState<number>(2026);
   const [countryB, setCountryB] = useState<string>('India');
@@ -47,6 +50,23 @@ export default function ComparePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
+  // Sync baseline countryA from profile or guest settings
+  useEffect(() => {
+    if (isLoggedIn && user?.country) {
+      setCountryA(user.country);
+    } else {
+      try {
+        const savedGuest = localStorage.getItem('fiscalquant_guest_profile');
+        if (savedGuest) {
+          const parsed = JSON.parse(savedGuest);
+          if (parsed.country) {
+            setCountryA(parsed.country);
+          }
+        }
+      } catch {}
+    }
+  }, [isLoggedIn, user?.country]);
 
   const isIdentical =
     countryA.toLowerCase().trim() === countryB.toLowerCase().trim() && yearA === yearB;
@@ -299,7 +319,7 @@ export default function ComparePage() {
                     {comparisonData.datasetA.country} ({comparisonData.datasetA.year}) vs {comparisonData.datasetB.country} ({comparisonData.datasetB.year})
                   </h3>
                   <p className="text-xs text-[#8cab87]">
-                    Total budget delta: {comparisonData.totalDelta >= 0 ? '+' : ''}{comparisonData.totalDelta.toFixed(2)} Lakh Cr ({comparisonData.totalPercentageChange >= 0 ? '+' : ''}{comparisonData.totalPercentageChange.toFixed(2)}%)
+                    Total budget delta: {comparisonData.totalDelta >= 0 ? '+' : ''}{comparisonData.totalDelta.toFixed(2)} {comparisonData.datasetA.unit || 'Lakh Cr'} ({comparisonData.totalPercentageChange >= 0 ? '+' : ''}{comparisonData.totalPercentageChange.toFixed(2)}%)
                   </p>
                 </div>
                 <BookmarkButton

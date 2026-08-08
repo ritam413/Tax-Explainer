@@ -61,7 +61,11 @@ export const Navbar: React.FC<NavbarProps> = ({
         <nav className="relative h-[64px] max-w-[1280px] mx-auto px-6 flex items-center justify-between">
           {/* Left: Brand Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-3.5 h-3.5 rounded-[2px] bg-[var(--accent-pulse)] shadow-[0_0_10px_rgba(127,238,100,0.5)] transition-transform group-hover:scale-110" />
+            <img
+              src="/fvicon.avif"
+              alt="FiscalQuant Logo"
+              className="w-6 h-6 rounded-md object-contain transition-transform group-hover:scale-110"
+            />
             <span className="font-manrope font-bold text-[18px] tracking-tight text-[var(--text-primary)]">
               FiscalQuant
             </span>

@@ -36,13 +36,33 @@ const AiTradeoffCard = dynamic(
   }
 );
 
+import { useAuth } from '@/components/providers/AuthProvider';
+
 export default function SimulatorPage() {
+  const { user, isLoggedIn } = useAuth();
   const [selectedCountry, setSelectedCountry] = useState('India');
   const [selectedYear, setSelectedYear] = useState(2026);
   const [rawDataset, setRawDataset] = useState<BudgetDataset | null>(null);
   const [simState, setSimState] = useState<SimulationState | null>(null);
   const [loading, setLoading] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Sync selected country from profile or guest settings
+  useEffect(() => {
+    if (isLoggedIn && user?.country) {
+      setSelectedCountry(user.country);
+    } else {
+      try {
+        const savedGuest = localStorage.getItem('fiscalquant_guest_profile');
+        if (savedGuest) {
+          const parsed = JSON.parse(savedGuest);
+          if (parsed.country) {
+            setSelectedCountry(parsed.country);
+          }
+        }
+      } catch {}
+    }
+  }, [isLoggedIn, user?.country]);
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const slidersContainerRef = useRef<HTMLDivElement | null>(null);

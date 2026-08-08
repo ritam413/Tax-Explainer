@@ -3,6 +3,7 @@
   "country": "Russia",
   "year": 2025,
   "currency": "₽",
+  "unit": "Trillion",
   "totalBudget": 41.5,
   "sectors": [
     {

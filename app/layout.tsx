@@ -47,6 +47,11 @@ export const metadata: Metadata = {
     description:
       "Explore, simulate, and understand government budget allocations with interactive visualizers and AI explanations.",
   },
+  icons: {
+    icon: [{ url: "/icon.avif", type: "image/avif" }],
+    shortcut: ["/icon.avif"],
+    apple: ["/icon.avif"],
+  },
   robots: {
     index: true,
     follow: true,
@@ -72,6 +77,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="icon" href="/icon.avif" type="image/avif" />
+        <link rel="shortcut icon" href="/icon.avif" type="image/avif" />
+        <link rel="apple-touch-icon" href="/icon.avif" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
