@@ -77,6 +77,11 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8055483943832059"
+          crossOrigin="anonymous"
+        />
         <link rel="icon" href="/icon.avif" type="image/avif" />
         <link rel="shortcut icon" href="/icon.avif" type="image/avif" />
         <link rel="apple-touch-icon" href="/icon.avif" />

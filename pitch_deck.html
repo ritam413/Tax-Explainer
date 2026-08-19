@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tx Expliner / FiscalQuant — 4-Minute Master Pitch Deck | Hackonomics 2027</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --void-black: #000000;
+            --ground-iron: #181818;
+            --carbon-veil: #212525;
+            --circuit-border: #485346;
+            --lime-pulse: #7fee64;
+            --phosphor-white: #ddffdc;
+            --sage-60: #8cab87;
+            --sage-40: #677d64;
+            --moss-70: #9cbf93;
+            --font-heading: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--void-black);
+            color: #ffffff;
+            font-family: var(--font-body);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .slide-deck {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        @media (min-width: 900px) {
+            .slide-deck {
+                max-width: calc(100vh * 16 / 9);
+                max-height: calc(100vw * 9 / 16);
+                margin: auto;
+                position: absolute;
+                inset: 0;
+                border: 1px solid var(--circuit-border);
+                box-shadow: 0 0 40px rgba(127, 238, 100, 0.15);
+            }
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px 50px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            transform: scale(0.98);
+            background: radial-gradient(circle at 50% 0%, #0d160f 0%, var(--void-black) 70%);
+            overflow: hidden;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .slide-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 20px;
+        }
+
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(72, 83, 70, 0.4);
+            padding-bottom: 12px;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(127, 238, 100, 0.08);
+            border: 1px solid rgba(127, 238, 100, 0.3);
+            color: var(--lime-pulse);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .timestamp-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .slide-tag {
+            color: var(--sage-60);
+            font-size: 12px;
+            font-family: var(--font-mono);
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-title {
+            font-size: clamp(32px, 4.5vw, 56px);
+            font-weight: 800;
+            line-height: 1.08;
+            background: linear-gradient(135deg, #ffffff 30%, var(--lime-pulse) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title {
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.15;
+        }
+
+        .subtitle {
+            font-size: clamp(14px, 1.5vw, 18px);
+            color: var(--sage-60);
+            line-height: 1.4;
+            max-width: 850px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .card {
+            background: var(--ground-iron);
+            border: 1px solid var(--circuit-border);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--lime-pulse);
+            transform: translateY(-2px);
+        }
+
+        .card-highlight {
+            border-color: rgba(127, 238, 100, 0.4);
+            background: linear-gradient(180deg, rgba(24,24,24,1) 0%, rgba(15,30,18,0.5) 100%);
+        }
+
+        .card-number {
+            font-family: var(--font-mono);
+            color: var(--lime-pulse);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--phosphor-white);
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--sage-60);
+            line-height: 1.4;
+        }
+
+        .tech-explain-box {
+            background: rgba(127, 238, 100, 0.05);
+            border-left: 3px solid var(--lime-pulse);
+            padding: 10px 14px;
+            border-radius: 0 6px 6px 0;
+            font-size: 12px;
+            color: var(--phosphor-white);
+            font-family: var(--font-mono);
+        }
+
+        .page-switch-prompt {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed var(--circuit-border);
+            padding: 10px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--sage-60);
+        }
+
+        .metric-big {
+            font-family: var(--font-mono);
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--lime-pulse);
+            line-height: 1;
+        }
+
+        .tech-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: #d1d5db;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 4px;
+            background: var(--lime-pulse);
+            box-shadow: 0 0 10px var(--lime-pulse);
+            transition: width 0.3s;
+            z-index: 1000;
+        }
+
+        .nav-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 1000;
+            background: rgba(24, 24, 24, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--circuit-border);
+            padding: 6px 18px;
+            border-radius: 30px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: var(--lime-pulse);
+            color: #000;
+            border-color: var(--lime-pulse);
+        }
+
+        .slide-counter {
+            color: var(--sage-60);
+            font-size: 12px;
+            font-family: var(--font-mono);
+        }
+
+        .chart-box {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid rgba(72, 83, 70, 0.3);
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--phosphor-white);
+            line-height: 1.4;
+        }
+
+        .feature-list li::before {
+            content: "✦";
+            color: var(--lime-pulse);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .slide { padding: 24px 16px; }
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .hero-title { font-size: 28px; }
+            .section-title { font-size: 20px; }
+            .chart-box { height: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="slide-deck">
+
+        <!-- SLIDE 1: Intro & Title -->
+        <div class="slide active">
+            <div class="slide-header">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="brand-badge">⚡ Hackonomics™ 2027 Official Entry</div>
+                    <div class="timestamp-badge">⏱️ 0:00 - 0:35</div>
+                </div>
+                <div class="slide-tag">Slide 01 / 10 // Start Page: pitch_deck.html</div>
+            </div>
+            <div class="slide-content" style="justify-content: center; text-align: center; items: center;">
+                <div style="margin: 0 auto; max-width: 880px;">
+                    <div style="color: var(--lime-pulse); font-family: var(--font-mono); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-size: 13px;">
+                        COMPUTER SCIENCE ✕ MACROECONOMICS
+                    </div>
+                    <h1 class="hero-title">Tx Expliner</h1>
+                    <p class="subtitle" style="margin: 12px auto 24px auto;">
+                        Democratizing Public Finance. Turning 500-Page Government Budget PDFs into Instant <5-Second Plain-Language AI Insights & Fiscal Policy Simulators.
+                    </p>
+
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;">
+                        <span class="tech-pill">Next.js 16 App Router</span>
+                        <span class="tech-pill">React 19 & TypeScript</span>
+                        <span class="tech-pill">Gemini 2.0 Flash SSE</span>
+                        <span class="tech-pill">Upstash Redis 2-Tier Cache</span>
+                        <span class="tech-pill">Supabase Auth/DB</span>
+                    </div>
+                </div>
+
+                <div class="grid-3" style="height: auto;">
+                    <div class="card card-highlight">
+                        <div class="metric-big">&lt; 5s</div>
+                        <div class="card-title">Instant Time-to-Insight</div>
+                        <div class="card-desc">Zero economic jargon. Citizens comprehend multi-trillion allocations in under 5 seconds.</div>
+                    </div>
+                    <div class="card card-highlight">
+                        <div class="metric-big">100%</div>
+                        <div class="card-title">Zero-Sum Simulator</div>
+                        <div class="card-desc">Simulate fiscal policy trade-offs with Hamilton largest-remainder mathematical precision.</div>
+                    </div>
+                    <div class="card card-highlight">
+                        <div class="metric-big">~0ms</div>
+                        <div class="card-title">Pre-Warmed AI Latency</div>
+                        <div class="card-desc">Next.js `instrumentation.ts` startup engine pre-caches core sector AI streams.</div>
+                    </div>
+                </div>
+
+                <div class="page-switch-prompt" style="margin-top: 14px;">
+                    <span>📍 DEMO VIDEO DIRECTIVE (0:00 - 0:35): Start on this slide. Present title, elevator pitch, and problem.</span>
+                    <span style="color: var(--lime-pulse);">Next Page ➔ `http://localhost:3000/`</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: Problem & Solution Vision -->
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="brand-badge">The Problem & Solution</div>
+                    <div class="timestamp-badge">⏱️ 0:15 - 0:35</div>
+                </div>
+                <div class="slide-tag">Slide 02 / 10 // Context & Vision</div>
+            </div>
+            <div class="slide-content">
+                <div>
+                    <h2 class="section-title">Government Budgets Are Broken for 99% of Citizens</h2>
+                    <p class="subtitle">Trillions in public funds are spent annually, yet citizens remain completely detached from fiscal spending.</p>
+                </div>
+
+                <div class="grid-3" style="height: auto;">
+                    <div class="card">
+                        <div class="card-number">01</div>
+                        <div class="card-title">Dense 500-Page PDFs</div>
+                        <div class="card-desc">Annual budgets are locked in impenetrable government PDFs filled with complex accounting terminology.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-number">02</div>
+                        <div class="card-title">Zero Citizen Engagement</div>
+                        <div class="card-desc">Students (~19yo) and everyday voters lack accessible visual tools to digest multi-lakh-crore sectoral spending.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-number">03</div>
+                        <div class="card-title">Passive vs Active Literacy</div>
+                        <div class="card-desc">Citizens cannot ask: <i>"What if we shift 10% from Defense to Healthcare?"</i> to see real economic trade-offs.</div>
+                    </div>
+                </div>
+
+                <div class="card card-highlight">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 700; color: var(--lime-pulse); font-size: 15px;">The Tx Expliner Solution Vision</div>
+                            <div style="color: var(--sage-60); font-size: 13px;">Full-stack Next.js 16 app converting raw budget data into interactive charts, streaming AI explainers, and real-time simulators.</div>
+                        </div>
+                        <span class="brand-badge">Full-Stack Solution</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: Page 1 Demo — Live Dashboard & Budget Search -->
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="brand-badge">Page 1 Demo: Dashboard</div>
+                    <div class="timestamp-badge">⏱️ 0:35 - 1:15</div>
+                </div>
+                <div class="slide-tag">Slide 03 / 10 // Active Page: http://localhost:3000/</div>
+            </div>
+            <div class="slide-content">
+                <div>
+                    <h2 class="section-title">Live Demo: Interactive Budget Dashboard & Search</h2>
+                    <p class="subtitle">Switching to browser tab: `http://localhost:3000` to demonstrate ₹50.65 Lakh Crore Union Budget 2026 dataset.</p>
+                </div>
+
+                <div class="grid-2">
+                    <ul class="feature-list">
+                        <li>
+                            <div>
+                                <strong style="color: var(--lime-pulse);">Next.js 16 App Router Server Component</strong><br>
+                                Server-side pre-rendering (`page.tsx`) ensures sub-2s initial load with strict hydration safety.
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <strong style="color: var(--lime-pulse);">Recharts Sector Breakdown Visualizer</strong><br>
+                                60fps responsive bar and pie charts rendering sector allocations, unit toggles (Lakh Cr / Billions), and YoY growth metrics.
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <strong style="color: var(--lime-pulse);">Debounced Search & Category Filtering</strong><br>
+                                Instant in-memory search across all 9 sectors with zero layout jank.
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="chart-box">
+                        <canvas id="sectorOverviewChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="tech-explain-box">
+                    <strong>🧠 Moderate Tech Explanation (Spoken at 0:55):</strong> "I architected this using Next.js 16 App Router with React Server Components (`RSC`). Data fetching happens directly on the server to eliminate client-side waterfall latency, while interactive charts run in lightweight client islands."
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: Live AI Plain-Language Explanations & SSE Streaming -->
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="brand-badge">AI Engine</div>
+                    <div class="timestamp-badge">⏱️ 1:15 - 1:55</div>
+                </div>
+                <div class="slide-tag">Slide 04 / 10 // Active Page: /budgets -> "Explain with AI"</div>
+            </div>
+            <div class="slide-content">
+                <div>
+                    <h2 class="section-title">Streaming AI Explanations via Server-Sent Events (SSE)</h2>
+                    <p class="subtitle">Clicking "Explain with AI" on sector rows to trigger token-by-token plain-language translation.</p>
+                </div>
+
+                <div class="grid-2">
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div class="card card-highlight">
+                            <div class="card-title" style="color: var(--lime-pulse);">Gemini 2.0 Flash Lite Integration</div>
+                            <div class="card-desc">Custom grounded prompts strictly enforced with JSON/markdown schemas to prevent AI hallucinations.</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">Server-Sent Events (SSE) Protocol</div>
+                            <div class="card-desc">HTTP response streaming (`ReadableStream`) outputting `data: {"text":"..."}` chunks token-by-token without blocking HTTP threads.</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">Strict Usage Controls</div>
+                            <div class="card-desc">Gemini API is never called automatically on page load; triggered strictly on user explicit CTA click to conserve quota.</div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="background: rgba(0,0,0,0.6); border: 1px solid var(--circuit-border); padding: 16px;">
+                        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--lime-pulse); margin-bottom: 8px;">LIVE SSE STREAMING CODE SIPPET</div>
+                        <pre style="font-family: var(--font-mono); font-size: 11px; color: #aebdb0; overflow-x: auto; white-space: pre-wrap;">
+const encoder = new TextEncoder();
+const stream = new ReadableStream({
+  async start(controller) {
+    for await (const chunk of result.stream) {
+      controller.enqueue(
+        encoder.encode(`data: ${JSON.stringify({ text: chunk.text() })}\n\n`)
+      );
+    }
+    controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+    controller.close();
+  }
+});
+return new Response(stream, { headers: { 'Content-Type': 'text/event-stream' } });
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="tech-explain-box">
+                    <strong>🧠 Moderate Tech Explanation (Spoken at 1:35):</strong> "Instead of traditional synchronous POST requests that cause user UI blocking, I implemented a custom SSE HTTP streaming response handler in `app/api/ai/explain/route.ts`. It streams chunks token-by-token as Gemini outputs them."
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: 2-Tier Caching & Startup Pre-Warming Engine -->
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="brand-badge">Caching Architecture</div>
+                    <div class="timestamp-badge">⏱️ 1:55 - 2:35</div>
+                </div>
+                <div class="slide-tag">Slide 05 / 10 // Upstash Redis & Next.js instrumentation.ts</div>
+            </div>
+            <div class="slide-content">
+                <div>
+                    <h2 class="section-title">2-Tier Redis Caching & Pre-Warming Engine</h2>
+                    <p class="subtitle">Achieving ~0ms response time and 100% cost efficiency through automated server startup warming.</p>
+                </div>
+
+                <div class="grid-2">
+                    <div class="grid-2" style="gap: 12px; height: auto;">
+                        <div class="card">
+                            <div class="card-title" style="color: var(--lime-pulse);">Tier 1: Dashboard Redis Cache</div>
+                            <div class="card-desc">Key: `dashboard:{country}:{year}` (TTL: 24 Hours). Serves pre-calculated budget datasets instantly.</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title" style="color: var(--lime-pulse);">Tier 2: AI Explanation Cache</div>
+                            <div class="card-desc">Key: `ai_explain:{budgetId}:{version}` (TTL: 7 Days). Stores full Gemini SSE streams.</div>
+                        </div>
+                        <div class="card" style="grid-column: span 2;">
+                            <div class="card-title" style="color: var(--lime-pulse);">Instrumentation Startup Pre-Warming Hook</div>
+                            <div class="card-desc">Next.js official `instrumentation.ts` exports `register()`, automatically executing `warmAIExplanationCache()` on Node.js startup to pre-warm all 9 default sector keys in the background.</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-box">
+                        <canvas id="latencyChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="tech-explain-box">
+                    <strong>🧠 Moderate Tech Explanation (Spoken at 2:15):</strong> "To ensure sub-second response times, I designed a 2-tier Upstash Redis caching layer with a Next.js `instrumentation.ts` lifecycle hook. On server boot, it asynchronously runs background pre-warming, reducing cached response latency from 3.2 seconds down to ~0ms."
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: Page 2 Demo — Zero-Sum Budget Reallocation Simulator -->
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="brand-badge">Page 2 Demo: Simulator</div>
+                    <div class="timestamp-badge">⏱️ 2:35 - 3:15</div>
+                </div>
+                <div class="slide-tag">Slide 06 / 10 // Active Page: http://localhost:3000/simulator</div>
+            </div>
+            <div class="slide-content">
+                <div>
+                    <h2 class="section-title">Zero-Sum Fiscal Simulator & Hamilton Rounding</h2>
+                    <p class="subtitle">Switching to `/simulator`: Reallocating sector budgets with mathematical quota conservation.</p>
+                </div>
+
+                <div class="grid-2">
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div class="card card-highlight">
+                            <div class="card-title" style="color: var(--lime-pulse);">Zero-Sum Redistribution Equation</div>
+                            <div class="card-desc">Increasing one sector $\Delta S_k > 0$ forces proportional offset across unlocked sectors: $\Delta S_i = -\Delta S_k \cdot \frac{S_i}{\sum_{j \in Unlocked} S_j}$, ensuring $\sum \Delta S = 0$.</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">Hamilton Largest-Remainder Method</div>
+                            <div class="card-desc">Eliminates floating-point currency rounding errors during live 60fps slider drags by allocating remainder fractions to largest decimal remainders.</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">AI Policy Trade-off Stream</div>
+                            <div class="card-desc">Evaluates macroeconomic consequences of hypothetical allocations on GDP growth, inflation, and employment.</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-box">
+                        <canvas id="simulatorChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="tech-explain-box">
+                    <strong>🧠 Moderate Tech Explanation (Spoken at 2:55):</strong> "For the simulator engine in `lib/utils/simulator.ts`, I wrote a zero-sum algorithm using the Hamilton Largest-Remainder method. When you adjust a slider, it redistributes the delta across unlocked sectors while guaranteeing zero total budget drift."
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Page 3 Demo — Year-over-Year Inflation Adjustment Engine -->
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="brand-badge">Page 3 Demo: Compare</div>
+                    <div class="timestamp-badge">⏱️ 3:15 - 3:45</div>
+                </div>
+                <div class="slide-tag">Slide 07 / 10 // Active Page: http://localhost:3000/compare</div>
+            </div>
+            <div class="slide-content">
+                <div>
+                    <h2 class="section-title">Inflation-Adjusted YoY Comparison Engine</h2>
+                    <p class="subtitle">Switching to `/compare`: Calculating real vs nominal spending deltas across multi-year budgets.</p>
+                </div>
+
+                <div class="grid-2">
+                    <ul class="feature-list">
+                        <li>
+                            <div>
+                                <strong style="color: var(--lime-pulse);">Full Outer Join Comparison Algorithm</strong><br>
+                                `compareBudgets(datasetA, datasetB, inflationRate)` handles new, discontinued, increased, and decreased sector items seamlessly.
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <strong style="color: var(--lime-pulse);">Real vs Nominal Delta Formula</strong><br>
+                                Real Delta = $\text{Amount}_B - (\text{Amount}_A \times (1 + \text{Inflation}))$, preventing misleading growth figures during inflationary cycles.
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <strong style="color: var(--lime-pulse);">AI Comparison Summary CTA</strong><br>
+                                Generates macro-level diff analysis comparing prior year commitments against current allocations.
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="card card-highlight" style="padding: 20px;">
+                        <div class="card-title" style="color: var(--lime-pulse);">Supabase Auth & RLS Bookmarking</div>
+                        <div class="card-desc" style="margin-top: 6px;">Users can save comparison snapshots and bookmark sector insights to their personal dashboard (`/bookmarks`) secured via Supabase Row Level Security.</div>
+                        <div style="display: flex; gap: 8px; margin-top: 10px;">
+                            <span class="tech-pill">Postgres RLS</span>
+                            <span class="tech-pill">102 Vitest Tests</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tech-explain-box">
+                    <strong>🧠 Moderate Tech Explanation (Spoken at 3:30):</strong> "In `lib/budget/service.ts`, the comparison engine performs a full outer join on multi-year sector arrays and computes real spending deltas adjusted for user-selected baseline inflation rates."
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: State Persistence, Supabase RLS & Vitest Test Suite -->
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="brand-badge">Quality Assurance</div>
+                    <div class="timestamp-badge">⏱️ 3:35 - 3:45</div>
+                </div>
+                <div class="slide-tag">Slide 08 / 10 // Active Page: /bookmarks & Vitest</div>
+            </div>
+            <div class="slide-content">
+                <div>
+                    <h2 class="section-title">Production Quality: Supabase RLS & 102 Passing Tests</h2>
+                    <p class="subtitle">Built with enterprise engineering standards, rigorous unit test suites, and strict security rules.</p>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card card-highlight">
+                        <div class="metric-big">102</div>
+                        <div class="card-title">Vitest Unit Tests</div>
+                        <div class="card-desc">100% test coverage on zero-sum math, Hamilton rounding, Zod schemas, and fallback API guards.</div>
+                    </div>
+                    <div class="card card-highlight">
+                        <div class="metric-big">RLS</div>
+                        <div class="card-title">Supabase Row Level Security</div>
+                        <div class="card-desc">Postgres security policies ensuring users can only read and write their own bookmarks & profile data.</div>
+                    </div>
+                    <div class="card card-highlight">
+                        <div class="metric-big">a11y</div>
+                        <div class="card-title">axe-core Accessibility</div>
+                        <div class="card-desc">Keyboard navigation, screen reader ARIA landmarks, and high-contrast dark palette compliance.</div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 700; color: #fff; font-size: 15px;">Zero Symptom Masking</div>
+                            <div style="color: var(--sage-60); font-size: 13px;">Every edge case (zero allocations, rate limit breaches, API key fallbacks) is gracefully handled with explicit Zod schema validation.</div>
+                        </div>
+                        <span class="tech-pill">Vitest Suite Passed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: "Phosphor Terminal Dark" Design System -->
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="brand-badge">Presentation Design</div>
+                    <div class="timestamp-badge">⏱️ 3:40 - 3:50</div>
+                </div>
+                <div class="slide-tag">Slide 09 / 10 // Design Tokens & Styling</div>
+            </div>
+            <div class="slide-content">
+                <div>
+                    <h2 class="section-title">Design Excellence: "Phosphor Terminal Dark" Theme</h2>
+                    <p class="subtitle">Crafted with Tailwind CSS v4 `@theme` design tokens for modern aesthetic appeal and visual impact.</p>
+                </div>
+
+                <div class="grid-4">
+                    <div class="card">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--void-black); border: 2px solid var(--lime-pulse); margin-bottom: 6px;"></div>
+                        <div class="card-title" style="font-size: 14px;">Void Black (`#000000`)</div>
+                        <div class="card-desc">Deep base canvas maximizing visual contrast.</div>
+                    </div>
+                    <div class="card">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--lime-pulse); margin-bottom: 6px;"></div>
+                        <div class="card-title" style="font-size: 14px;">Lime Pulse (`#7fee64`)</div>
+                        <div class="card-desc">Vibrant primary accent for CTAs and metrics.</div>
+                    </div>
+                    <div class="card">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--ground-iron); border: 1px solid var(--circuit-border); margin-bottom: 6px;"></div>
+                        <div class="card-title" style="font-size: 14px;">Circuit Borders (`#485346`)</div>
+                        <div class="card-desc">Terminal-style subtle card outlines.</div>
+                    </div>
+                    <div class="card">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, var(--lime-pulse), #3b82f6); margin-bottom: 6px;"></div>
+                        <div class="card-title" style="font-size: 14px;">Micro-Animations</div>
+                        <div class="card-desc">Smooth SSE stream rendering and 60fps charts.</div>
+                    </div>
+                </div>
+
+                <div class="grid-2" style="height: auto; margin-top: 10px;">
+                    <div class="card" style="padding: 14px;">
+                        <div style="font-size: 12px; font-family: var(--font-mono); color: var(--lime-pulse);">TYPOGRAPHY PAIRING</div>
+                        <div style="font-size: 13px; color: var(--sage-60); margin-top: 4px;">`Manrope` for bold headlines + `Inter` for clean body readability + `JetBrains Mono` for code & mathematical equations.</div>
+                    </div>
+                    <div class="card" style="padding: 14px;">
+                        <div style="font-size: 12px; font-family: var(--font-mono); color: var(--lime-pulse);">COLLAPSIBLE NAVIGATION</div>
+                        <div style="font-size: 13px; color: var(--sage-60); margin-top: 4px;">Top header and left sidebar feature hover green handle handles to maximize chart canvas real estate.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: Hackonomics 2027 Winning Summary & Conclusion -->
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <div class="brand-badge">Conclusion</div>
+                    <div class="timestamp-badge">⏱️ 3:45 - 4:00</div>
+                </div>
+                <div class="slide-tag">Slide 10 / 10 // Closing Pitch & Victory Matrix</div>
+            </div>
+            <div class="slide-content">
+                <div>
+                    <h2 class="section-title">Why Tx Expliner Wins Hackonomics 2027</h2>
+                    <p class="subtitle">Complete alignment across all 5 official judging criteria.</p>
+                </div>
+
+                <div class="grid-2">
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 10px; background: rgba(127, 238, 100, 0.1); border: 1px solid var(--lime-pulse); padding: 8px 12px; border-radius: 6px;">
+                            <span style="font-weight: bold; color: var(--lime-pulse); font-size: 13px;">Relevancy:</span>
+                            <span style="font-size: 13px; color: #fff;">100% CS + Macroeconomic literacy focus.</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--circuit-border); padding: 8px 12px; border-radius: 6px;">
+                            <span style="font-weight: bold; color: var(--lime-pulse); font-size: 13px;">Technical Execution:</span>
+                            <span style="font-size: 13px; color: #fff;">Next.js 16, SSE streaming, 102 Vitest tests.</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--circuit-border); padding: 8px 12px; border-radius: 6px;">
+                            <span style="font-weight: bold; color: var(--lime-pulse); font-size: 13px;">Presentation:</span>
+                            <span style="font-size: 13px; color: #fff;">Phosphor Terminal Dark theme & 60fps Recharts.</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--circuit-border); padding: 8px 12px; border-radius: 6px;">
+                            <span style="font-weight: bold; color: var(--lime-pulse); font-size: 13px;">Impact:</span>
+                            <span style="font-size: 13px; color: #fff;">Turning 500-page PDFs into instant <5s insights.</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--circuit-border); padding: 8px 12px; border-radius: 6px;">
+                            <span style="font-weight: bold; color: var(--lime-pulse); font-size: 13px;">Innovation:</span>
+                            <span style="font-size: 13px; color: #fff;">Zero-sum fiscal simulator & startup pre-warming.</span>
+                        </div>
+                    </div>
+
+                    <div class="card card-highlight" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 24px;">
+                        <div style="font-size: 12px; font-family: var(--font-mono); color: var(--lime-pulse); margin-bottom: 6px;">DEMO VIDEO WRAP-UP (4:00)</div>
+                        <h3 style="font-size: 22px; font-weight: 800; color: #ffffff; margin-bottom: 8px;">Tx Expliner / FiscalQuant</h3>
+                        <p style="font-size: 13px; color: var(--sage-60); margin-bottom: 18px;">Empowering citizens to explore, understand, and simulate public budgets.</p>
+                        <button onclick="showSlide(1)" style="background: var(--lime-pulse); color: #000; font-weight: 700; border: none; padding: 10px 24px; border-radius: 30px; cursor: pointer; font-size: 14px; box-shadow: 0 0 15px rgba(127,238,100,0.5);">
+                            Restart 4-Min Deck ↺
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+        <button class="nav-btn" onclick="prevSlide()" title="Previous Slide (Left Arrow)">←</button>
+        <span class="slide-counter"><span id="current">1</span> / <span id="total">10</span></span>
+        <button class="nav-btn" onclick="nextSlide()" title="Next Slide (Right Arrow or Space)">→</button>
+    </div>
+
+    <script>
+        let current = 1;
+        const total = document.querySelectorAll('.slide').length;
+        document.getElementById('total').textContent = total;
+
+        function showSlide(n) {
+            if (n < 1) n = 1;
+            if (n > total) n = total;
+            current = n;
+            document.querySelectorAll('.slide').forEach((s, i) => {
+                s.classList.toggle('active', i === n - 1);
+            });
+            document.getElementById('current').textContent = n;
+            document.getElementById('progressBar').style.width = (n / total * 100) + '%';
+            
+            if (n === 3) renderSectorChart();
+            if (n === 5) renderLatencyChart();
+            if (n === 6) renderSimulatorChart();
+        }
+
+        function nextSlide() { showSlide(current + 1); }
+        function prevSlide() { showSlide(current - 1); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        });
+
+        showSlide(1);
+
+        let sectorChartInst = null;
+        let latencyChartInst = null;
+        let simulatorChartInst = null;
+
+        function renderSectorChart() {
+            if (sectorChartInst) return;
+            const ctx = document.getElementById('sectorOverviewChart').getContext('2d');
+            sectorChartInst = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Defense', 'Rural Dev', 'Railways', 'Roads', 'Education', 'Health'],
+                    datasets: [{
+                        label: 'Budget (Lakh Cr)',
+                        data: [6.21, 2.65, 2.55, 2.78, 1.25, 0.90],
+                        backgroundColor: '#7fee64',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: '#8cab87' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: '#8cab87' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+        }
+
+        function renderLatencyChart() {
+            if (latencyChartInst) return;
+            const ctx = document.getElementById('latencyChart').getContext('2d');
+            latencyChartInst = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Cold API Call', 'Gemini SSE Stream', 'Redis Warm Hit', 'Pre-Warmed Startup'],
+                    datasets: [{
+                        label: 'Response Time (ms)',
+                        data: [3200, 1400, 45, 12],
+                        borderColor: '#7fee64',
+                        backgroundColor: 'rgba(127,238,100,0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: '#8cab87' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: '#8cab87' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+        }
+
+        function renderSimulatorChart() {
+            if (simulatorChartInst) return;
+            const ctx = document.getElementById('simulatorChart').getContext('2d');
+            simulatorChartInst = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Defense', 'Education', 'Health', 'Infrastructure'],
+                    datasets: [
+                        { label: 'Baseline', data: [6.2, 1.25, 0.9, 2.78], backgroundColor: 'rgba(255,255,255,0.2)' },
+                        { label: 'Simulated', data: [5.2, 1.75, 1.4, 2.78], backgroundColor: '#7fee64' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#ddffdc' } } },
+                    scales: {
+                        x: { ticks: { color: '#8cab87' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: '#8cab87' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
